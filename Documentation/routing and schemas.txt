@@ -43,7 +43,6 @@ Updated  MongoDB Schemas :
 
   1.  Property Schema 
 
-```javascript
 const mongoose = require('mongoose');
 
 const propertySchema = new mongoose.Schema({
@@ -102,11 +101,9 @@ const propertySchema = new mongoose.Schema({
 
 const Property = mongoose.model('Property', propertySchema);
 module.exports = Property;
-```
 
   2.  Agent Schema 
 
-```javascript
 const mongoose = require('mongoose');
 
 const agentSchema = new mongoose.Schema({
@@ -138,11 +135,9 @@ const agentSchema = new mongoose.Schema({
 
 const Agent = mongoose.model('Agent', agentSchema);
 module.exports = Agent;
-```
 
   3.  Client Schema 
 
-```javascript
 const mongoose = require('mongoose');
 
 const clientSchema = new mongoose.Schema({
@@ -171,11 +166,9 @@ const clientSchema = new mongoose.Schema({
 
 const Client = mongoose.model('Client', clientSchema);
 module.exports = Client;
-```
 
   4.  Review Schema (with "edit" property) 
 
-```javascript
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
@@ -210,6 +203,5 @@ const reviewSchema = new mongoose.Schema({
 
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;
-```
 
 ---
