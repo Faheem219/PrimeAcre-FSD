@@ -1,45 +1,53 @@
-// src/pages/RegisterPage.jsx
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import axios from '../api/axiosConfig';
+import axios from '../api/axiosConfig';  // Assuming axios instance is configured for API base URL
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const { setAuth } = useContext(AuthContext);
-  const [role, setRole] = useState('Client');
+  const [role, setRole] = useState('Client');  // Default role is "Client"
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     password: '',
-    agency: '',
+    agency: '',  // Only required for "Agent" role
   });
+  const [error, setError] = useState('');  // To capture any registration errors
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      // Registration API call
       await axios.post('/auth/register', { ...formData, role });
-      // Automatically log in after registration
+
+      // Automatic login after successful registration
       const loginResponse = await axios.post('/auth/login', {
         email: formData.email,
         password: formData.password,
       });
+
+      // Update authentication context with user data
       setAuth({
         isAuthenticated: true,
         user: loginResponse.data.user,
         role: loginResponse.data.user.role,
       });
+
+      // Redirect to the homepage after successful login
       navigate('/');
     } catch (error) {
-      console.error('Registration failed:', error);
+      setError('Registration failed. Please try again.');  // Capture registration failure
+      console.error('Error during registration:', error);
     }
   };
 
   return (
     <div>
       <h2>Register</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Display error if registration fails */}
       <form onSubmit={handleRegister}>
         {/* Role Selection */}
         <label>
@@ -60,6 +68,7 @@ const RegisterPage = () => {
           />
           Agent
         </label>
+
         {/* Form Fields */}
         <input
           type="text"
@@ -97,6 +106,8 @@ const RegisterPage = () => {
           }
           required
         />
+
+        {/* Conditional Field for "Agent" Role */}
         {role === 'Agent' && (
           <input
             type="text"
@@ -108,6 +119,7 @@ const RegisterPage = () => {
             required
           />
         )}
+
         <input
           type="password"
           placeholder="Password"
@@ -117,6 +129,7 @@ const RegisterPage = () => {
           }
           required
         />
+
         <button type="submit">Register</button>
       </form>
     </div>

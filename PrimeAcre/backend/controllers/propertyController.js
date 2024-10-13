@@ -50,21 +50,46 @@ exports.getPropertyById = async (req, res) => {
 exports.createProperty = async (req, res) => {
   try {
     const agentId = req.user.id; // Assuming agent is authenticated
-    const agent = await Agent.findById(agentId);
-    if (!agent) {
-      return res.status(404).json({ error: 'Agent not found' });
+
+    // Verify that the user is an agent
+    const agent = await User.findById(agentId);
+    if (!agent || agent.role !== 'Agent') {
+      return res.status(403).json({ error: 'Unauthorized: Only agents can add properties' });
     }
 
-    // Collect image URLs from Cloudinary
-    const images = req.files.map((file) => file.path);
+    let images = [];
 
+    // Check if files were uploaded via Multer
+    if (req.files && req.files.length > 0) {
+      // Collect image URLs from Cloudinary uploads
+      images = req.files.map((file) => file.path);
+    } else if (req.body.images && req.body.images.length > 0) {
+      // Use image URLs provided in the request body
+      images = req.body.images;
+    } else {
+      // No images provided
+      return res.status(400).json({ error: 'At least one image is required' });
+    }
+
+    // Create new property with data from req.body and images array
     const newProperty = new Property({
-      ...req.body,
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      location: req.body.location,
+      size: req.body.size,
+      bedrooms: req.body.bedrooms,
+      bathrooms: req.body.bathrooms,
+      propertyType: req.body.propertyType,
+      status: req.body.status || 'Available',
       agent: agentId,
       images: images,
+      dateListed: req.body.dateListed || Date.now(),
     });
 
     const savedProperty = await newProperty.save();
+
+    // Add property to agent's list of properties
     agent.properties.push(savedProperty._id);
     await agent.save();
 

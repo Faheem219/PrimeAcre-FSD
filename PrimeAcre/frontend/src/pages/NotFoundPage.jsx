@@ -1,10 +1,9 @@
-// src/pages/NotFoundPage.jsx
 import React from 'react';
 
 const NotFoundPage = () => {
   return (
     <div>
-      <h2>404 - Not Found</h2>
+      <h1>404 - Page Not Found</h1>
       <p>The page you're looking for doesn't exist.</p>
     </div>
   );

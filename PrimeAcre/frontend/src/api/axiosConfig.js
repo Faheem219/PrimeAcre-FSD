@@ -1,9 +1,13 @@
-// src/api/axiosConfig.js
 import axios from 'axios';
 
+const API_URL = 'http://localhost:5001';  // Base URL of your backend API
+
 const instance = axios.create({
-  baseURL: 'http://localhost:5001', // Replace with your backend URL and port
-  withCredentials: true, // Include cookies in requests
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
 });
 
 export default instance;
