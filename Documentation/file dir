@@ -1,0 +1,58 @@
+PrimeAcre/
+├── backend/
+│   ├── config/
+│   │   ├── cloudinaryConfig.js
+│   │   ├── database.js
+│   │   ├── passport.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── propertyController.js
+│   │   ├── reviewController.js
+│   │   ├── userController.js
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── node_modules/
+│   ├── .env
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+|
+|
+├── frontend/
+│   ├── node_modules/
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── agentAPI.js
+│   │   │   ├── authAPI.js
+│   │   │   ├── axiosConfig.js
+│   │   │   ├── clientAPI.js
+│   │   │   ├── propertyAPI.js
+│   │   │   ├── reviewAPI.js
+│   │   ├── components/
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── ProtectedRoute.jsx
+│   │   ├── contexts/
+│   │   │   ├── AuthContext.jsx
+│   │   ├── pages/
+│   │   │   ├── AddPropertyPage.jsx
+│   │   │   ├── AgentProfilePage.jsx
+│   │   │   ├── ClientProfilePage.jsx
+│   │   │   ├── EditPropertyPage.jsx
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── NotFoundPage.jsx
+│   │   │   ├── PropertyDetailPage.jsx
+│   │   │   ├── PropertyListPage.jsx
+│   │   │   ├── RegisterPage.jsx
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── vite.config.js
+├── .gitignore

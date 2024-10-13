@@ -1,62 +1,72 @@
+// src/pages/LoginPage.jsx
 import React, { useState, useContext } from 'react';
+import { loginUser } from '../api/authAPI';
 import { AuthContext } from '../contexts/AuthContext';
-import axios from '../api/axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
-const LoginPage = () => {
+function LoginPage() {
   const { setAuth } = useContext(AuthContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');   // Error state for login failures
-  const [loading, setLoading] = useState(false);  // Loading state during login
   const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState(null);
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);  // Start loading
-    setError('');  // Reset error before submission
-
     try {
-      const response = await axios.post('/auth/login', { email, password });
-      setAuth({
+      await loginUser(credentials);
+      // Update auth state
+      setAuth((prevAuth) => ({
+        ...prevAuth,
         isAuthenticated: true,
-        user: response.data.user,
-        role: response.data.user.role,
-      });
-      navigate('/');  // Redirect to homepage after successful login
+      }));
+      navigate('/'); // Redirect to home
     } catch (error) {
-      setError('Login failed. Please check your email and password.');  // Display error message
-      console.error('Login failed:', error);
-    } finally {
-      setLoading(false);  // Stop loading
+      setErrors(error.response.data.error || 'Invalid credentials');
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Show error message */}
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>  {/* Disable button when loading */}
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
+      <h1>Login</h1>
+      {errors && <p style={{ color: 'red' }}>{errors}</p>}
+      <form onSubmit={handleSubmit}>
+        {/* Email */}
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={credentials.email}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        {/* Password */}
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        {/* Submit Button */}
+        <button type="submit">Login</button>
       </form>
+      <p>
+        Don't have an account? <Link to="/register">Register here.</Link>
+      </p>
     </div>
   );
-};
+}
 
 export default LoginPage;
