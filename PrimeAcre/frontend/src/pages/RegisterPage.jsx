@@ -1,139 +1,129 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import axios from '../api/axiosConfig';  // Assuming axios instance is configured for API base URL
-import { useNavigate } from 'react-router-dom';
+// src/pages/RegisterPage.jsx
+import React, { useState } from 'react';
+import { registerUser } from '../api/authAPI';
+import { useNavigate, Link } from 'react-router-dom';
 
-const RegisterPage = () => {
-  const { setAuth } = useContext(AuthContext);
-  const [role, setRole] = useState('Client');  // Default role is "Client"
-  const [formData, setFormData] = useState({
+function RegisterPage() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    role: 'Client',
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
     password: '',
-    agency: '',  // Only required for "Agent" role
+    phone: '',
+    agency: '',
   });
-  const [error, setError] = useState('');  // To capture any registration errors
-  const navigate = useNavigate();
+  const [errors, setErrors] = useState(null);
 
-  const handleRegister = async (e) => {
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const handleRoleChange = (e) => {
+    const role = e.target.value;
+    setUserData({ ...userData, role, agency: '' }); // Reset agency if not Agent
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Registration API call
-      await axios.post('/auth/register', { ...formData, role });
-
-      // Automatic login after successful registration
-      const loginResponse = await axios.post('/auth/login', {
-        email: formData.email,
-        password: formData.password,
-      });
-
-      // Update authentication context with user data
-      setAuth({
-        isAuthenticated: true,
-        user: loginResponse.data.user,
-        role: loginResponse.data.user.role,
-      });
-
-      // Redirect to the homepage after successful login
-      navigate('/');
+      await registerUser(userData);
+      navigate('/login'); // Redirect to login
     } catch (error) {
-      setError('Registration failed. Please try again.');  // Capture registration failure
-      console.error('Error during registration:', error);
+      setErrors(error.response.data.error || 'An error occurred during registration');
     }
   };
 
   return (
     <div>
-      <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Display error if registration fails */}
-      <form onSubmit={handleRegister}>
-        {/* Role Selection */}
+      <h1>Register</h1>
+      {errors && <p style={{ color: 'red' }}>{errors}</p>}
+      <form onSubmit={handleSubmit}>
+        {/* Role */}
         <label>
-          <input
-            type="radio"
-            value="Client"
-            checked={role === 'Client'}
-            onChange={() => setRole('Client')}
-          />
-          Client
+          Role:
+          <select name="role" value={userData.role} onChange={handleRoleChange} required>
+            <option value="Client">Client</option>
+            <option value="Agent">Agent</option>
+          </select>
         </label>
+        {/* First Name */}
         <label>
-          <input
-            type="radio"
-            value="Agent"
-            checked={role === 'Agent'}
-            onChange={() => setRole('Agent')}
-          />
-          Agent
-        </label>
-
-        {/* Form Fields */}
-        <input
-          type="text"
-          placeholder="First Name"
-          value={formData.firstName}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, firstName: e.target.value }))
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={formData.lastName}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, lastName: e.target.value }))
-          }
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, email: e.target.value }))
-          }
-          required
-        />
-        <input
-          type="tel"
-          placeholder="Phone"
-          value={formData.phone}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, phone: e.target.value }))
-          }
-          required
-        />
-
-        {/* Conditional Field for "Agent" Role */}
-        {role === 'Agent' && (
+          First Name:
           <input
             type="text"
-            placeholder="Agency"
-            value={formData.agency}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, agency: e.target.value }))
-            }
+            name="firstName"
+            value={userData.firstName}
+            onChange={handleChange}
             required
           />
+        </label>
+        {/* Last Name */}
+        <label>
+          Last Name:
+          <input
+            type="text"
+            name="lastName"
+            value={userData.lastName}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        {/* Email */}
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        {/* Password */}
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            value={userData.password}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        {/* Phone */}
+        <label>
+          Phone:
+          <input
+            type="text"
+            name="phone"
+            value={userData.phone}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        {/* Agency (for Agents only) */}
+        {userData.role === 'Agent' && (
+          <label>
+            Agency:
+            <input
+              type="text"
+              name="agency"
+              value={userData.agency}
+              onChange={handleChange}
+              required
+            />
+          </label>
         )}
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, password: e.target.value }))
-          }
-          required
-        />
-
+        {/* Submit Button */}
         <button type="submit">Register</button>
       </form>
+      <p>
+        Already have an account? <Link to="/login">Login here.</Link>
+      </p>
     </div>
   );
-};
+}
 
 export default RegisterPage;

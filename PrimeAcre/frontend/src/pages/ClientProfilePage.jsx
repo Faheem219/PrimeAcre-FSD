@@ -1,39 +1,53 @@
+// src/pages/ClientProfilePage.jsx
 import React, { useEffect, useState } from 'react';
-import { getClients } from '../api/clientAPI'; // API call to backend
+import { getUserProfile } from '../api/userAPI';
+import { Link } from 'react-router-dom';
 
-const ClientProfilePage = () => {
-    const [clients, setClients] = useState([]);
+function ClientProfilePage() {
+    const [clientData, setClientData] = useState(null);
+    const [errors, setErrors] = useState(null);
+
+    const fetchClientData = async () => {
+        try {
+            const data = await getUserProfile();
+            setClientData(data);
+        } catch (error) {
+            setErrors(error.response.data.error || 'An error occurred');
+        }
+    };
 
     useEffect(() => {
-        const fetchClients = async () => {
-            try {
-                const response = await getClients();
-                setClients(response.data);
-            } catch (error) {
-                console.error('Error fetching clients:', error);
-            }
-        };
-
-        fetchClients();
+        fetchClientData();
     }, []);
+
+    if (!clientData) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
-            <h1>Clients</h1>
-            <ul>
-                {clients.map((client) => (
-                    <li key={client._id}>
-                        {client.firstName} {client.lastName} - {client.email}
-                        <ul>
-                            {client.interestedProperties.map((property) => (
-                                <li key={property._id}>{property.title}</li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
-            </ul>
+            <h1>Client Profile</h1>
+            {errors && <p style={{ color: 'red' }}>{errors}</p>}
+            <p>
+                Name: {clientData.firstName} {clientData.lastName}
+            </p>
+            <p>Email: {clientData.email}</p>
+            <p>Phone: {clientData.phone}</p>
+
+            <h2>Interested Properties</h2>
+            {clientData.interestedProperties && clientData.interestedProperties.length > 0 ? (
+                <ul>
+                    {clientData.interestedProperties.map((property) => (
+                        <li key={property._id}>
+                            <Link to={`/properties/${property._id}`}>{property.title}</Link>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>You have not marked any properties as interested yet.</p>
+            )}
         </div>
     );
-};
+}
 
 export default ClientProfilePage;

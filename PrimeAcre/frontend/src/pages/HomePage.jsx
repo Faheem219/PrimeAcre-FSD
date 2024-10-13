@@ -1,13 +1,15 @@
+// src/pages/HomePage.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const HomePage = () => {
+function HomePage() {
     return (
         <div>
-            <h1>Welcome to Prime Acre Real Estate</h1>
-            <p>Explore properties, agents, and more.</p>
-            {/* You can add links or a navigation menu here */}
+            <h1>Welcome to PrimeAcre</h1>
+            <p>Your one-stop solution for real estate needs.</p>
+            <Link to="/properties">Browse Properties</Link>
         </div>
     );
-};
+}
 
 export default HomePage;

@@ -49,6 +49,9 @@ exports.getPropertyById = async (req, res) => {
 // Create a new property
 exports.createProperty = async (req, res) => {
   try {
+    console.log('req.files:', req.files);
+    console.log('req.body:', req.body);
+
     const agentId = req.user.id; // Assuming agent is authenticated
 
     // Verify that the user is an agent
