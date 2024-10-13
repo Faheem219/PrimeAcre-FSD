@@ -1,6 +1,6 @@
 // controllers/propertyController.js
 const Property = require('../models/property');
-const Agent = require('../models/user');
+const User = require('../models/user');
 const cloudinary = require('../config/cloudinaryConfig');
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
