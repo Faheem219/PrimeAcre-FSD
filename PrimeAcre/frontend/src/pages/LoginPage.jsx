@@ -1,72 +1,42 @@
 // src/pages/LoginPage.jsx
-import React, { useState, useContext } from 'react';
-import { loginUser } from '../api/authAPI';
+import React, { useContext } from 'react';
+import { AppProvider, SignInPage } from '@toolpad/core';
+import { useTheme } from '@mui/material/styles';
 import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../api/authAPI';
 
-function LoginPage() {
+const providers = [{ id: 'credentials', name: 'Email and Password' }];
+
+export default function LoginPage() {
+  const theme = useTheme();
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState(null);
 
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const signIn = async (provider, formData) => {
     try {
-      await loginUser(credentials);
+      const credentials = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+      };
+      const response = await loginUser(credentials);
+
       // Update auth state
-      setAuth((prevAuth) => ({
-        ...prevAuth,
+      setAuth({
         isAuthenticated: true,
-      }));
-      navigate('/'); // Redirect to home
+        user: response.user,
+        role: response.user.role,
+      });
+
+      navigate('/'); // Redirect to home page after successful login
     } catch (error) {
-      setErrors(error.response.data.error || 'Invalid credentials');
+      alert(error.response?.data?.error || 'Invalid credentials');
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      {errors && <p style={{ color: 'red' }}>{errors}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Email */}
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={credentials.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        {/* Password */}
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        {/* Submit Button */}
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don't have an account? <Link to="/register">Register here.</Link>
-      </p>
-    </div>
+    <AppProvider theme={theme}>
+      <SignInPage signIn={signIn} providers={providers} />
+    </AppProvider>
   );
 }
-
-export default LoginPage;
