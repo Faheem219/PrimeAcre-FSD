@@ -25,7 +25,6 @@ function AddPropertyPage() {
     const handleChange = (e) => {
         if (e.target.name === 'images') {
             const files = Array.from(e.target.files);
-            console.log(files);
 
             setImages(files); // Set the files to the images state
 
