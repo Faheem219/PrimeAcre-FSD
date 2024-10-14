@@ -1,8 +1,16 @@
 // src/components/Header.jsx
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import axios from '../api/axiosConfig';
+
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Link,
+} from '@mui/material';
 
 const Header = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -19,33 +27,54 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/properties">Properties</Link>
+    <AppBar position="static" sx={{ backgroundColor: '#1e1e1e' }}>
+      <Toolbar>
+        {/* Site Title */}
+        <Typography
+          variant="h6"
+          component={RouterLink}
+          to="/"
+          sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}
+        >
+          PrimeAcre
+        </Typography>
+        {/* Navigation Links */}
+        <Button color="inherit" component={RouterLink} to="/properties">
+          Properties
+        </Button>
         {auth.isAuthenticated ? (
           <>
             {auth.role === 'Agent' && (
               <>
-                <Link to="/properties/add">Add Property</Link>
-                <Link to="/agent/profile">Agent Profile</Link>
+                <Button color="inherit" component={RouterLink} to="/properties/add">
+                  Add Property
+                </Button>
+                <Button color="inherit" component={RouterLink} to="/agent/profile">
+                  Agent Profile
+                </Button>
               </>
             )}
             {auth.role === 'Client' && (
-              <>
-                <Link to="/client/profile">Client Profile</Link>
-              </>
+              <Button color="inherit" component={RouterLink} to="/client/profile">
+                Client Profile
+              </Button>
             )}
-            <button onClick={handleLogout}>Logout</button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
           </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            <Button color="inherit" component={RouterLink} to="/login">
+              Login
+            </Button>
+            <Button color="inherit" component={RouterLink} to="/register">
+              Register
+            </Button>
           </>
         )}
-      </nav>
-    </header>
+      </Toolbar>
+    </AppBar>
   );
 };
 
