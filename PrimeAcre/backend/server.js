@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // app.js
 const express = require('express');
 const session = require('express-session');
@@ -8,11 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const flash = require('connect-flash');
-const dotenv = require('dotenv');
 const cors = require('cors');
-
-// Load environment variables
-dotenv.config();
 
 // Connect to MongoDB
 connectDB();

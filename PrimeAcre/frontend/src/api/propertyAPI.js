@@ -14,7 +14,11 @@ export const getPropertyById = async (id) => {
 
 // Add a new property
 export const addProperty = async (propertyData) => {
-    const response = await axios.post('/properties', propertyData);
+    const response = await axios.post('/properties', propertyData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
     return response.data;
 };
 

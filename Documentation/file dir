@@ -10,8 +10,16 @@ PrimeAcre/
 │   │   ├── reviewController.js
 │   │   ├── userController.js
 │   ├── middleware/
+│   │   ├── auth.js
 │   ├── models/
+│   │   ├── property.js
+│   │   ├── review.js
+│   │   ├── user.js
 │   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── propertyRoutes.js
+│   │   ├── reviewRoutes.js
+│   │   ├── userRoutes.js
 │   ├── node_modules/
 │   ├── .env
 │   ├── package-lock.json
@@ -29,6 +37,7 @@ PrimeAcre/
 │   │   │   ├── clientAPI.js
 │   │   │   ├── propertyAPI.js
 │   │   │   ├── reviewAPI.js
+│   │   │   ├── userAPI.js
 │   │   ├── components/
 │   │   │   ├── Footer.jsx
 │   │   │   ├── Header.jsx

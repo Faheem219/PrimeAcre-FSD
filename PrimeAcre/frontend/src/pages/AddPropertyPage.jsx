@@ -1,4 +1,3 @@
-// src/pages/AddPropertyPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addProperty } from '../api/propertyAPI';
@@ -15,8 +14,8 @@ function AddPropertyPage() {
         bathrooms: '',
         propertyType: 'Apartment',
         status: 'Available',
-        images: [],
     });
+    const [images, setImages] = useState([]);  // Separate state for images
     const [imagesPreview, setImagesPreview] = useState([]);
     const [errors, setErrors] = useState(null);
 
@@ -26,7 +25,9 @@ function AddPropertyPage() {
     const handleChange = (e) => {
         if (e.target.name === 'images') {
             const files = Array.from(e.target.files);
-            setFormData({ ...formData, images: files });
+            console.log(files);
+
+            setImages(files); // Set the files to the images state
 
             // Image previews
             const previews = files.map((file) => URL.createObjectURL(file));
@@ -51,7 +52,8 @@ function AddPropertyPage() {
         data.append('propertyType', formData.propertyType);
         data.append('status', formData.status);
 
-        formData.images.forEach((image) => {
+        // Append each image to the formData
+        images.forEach((image) => {
             data.append('images', image);
         });
 
@@ -174,16 +176,17 @@ function AddPropertyPage() {
                     </select>
                 </label>
                 {/* Images */}
-                <label>
+                <label htmlFor='imageUpload'>
                     Images (up to 5):
-                    <input
-                        type="file"
-                        name="images"
-                        onChange={handleChange}
-                        multiple
-                        accept="image/*"
-                    />
                 </label>
+                <input
+                    type="file"
+                    name="images"
+                    onChange={handleChange}
+                    multiple
+                    accept="image/*"
+                    id='imageUpload'
+                />
                 {/* Image Previews */}
                 {imagesPreview.length > 0 && (
                     <div>

@@ -144,7 +144,21 @@ exports.deleteProperty = async (req, res) => {
       return res.status(404).json({ error: 'Property not found or unauthorized' });
     }
 
-    res.status(200).json({ message: 'Property deleted' });
+    // Extract public IDs from the image URLs
+    const publicIds = property.images.map((imageUrl) => {
+      // Assuming imageUrl is like 'https://res.cloudinary.com/your_cloud_name/image/upload/v1623652876/folder/imagename.jpg'
+      const parts = imageUrl.split('/');
+      const filenameWithExtension = parts[parts.length - 1]; // imagename.jpg
+      const publicId = filenameWithExtension.split('.')[0]; // imagename (without extension)
+      return `properties/${publicId}`; // Assuming the images are in the 'properties' folder
+    });
+
+    // Delete images from Cloudinary
+    for (const publicId of publicIds) {
+      await cloudinary.uploader.destroy(publicId);
+    }
+
+    res.status(200).json({ message: 'Property and associated images deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
