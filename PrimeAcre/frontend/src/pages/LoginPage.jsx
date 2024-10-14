@@ -1,42 +1,143 @@
 // src/pages/LoginPage.jsx
-import React, { useContext } from 'react';
-import { AppProvider, SignInPage } from '@toolpad/core';
-import { useTheme } from '@mui/material/styles';
-import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
 import { loginUser } from '../api/authAPI';
+import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 
-const providers = [{ id: 'credentials', name: 'Email and Password' }];
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Link as MuiLink,
+} from '@mui/material';
 
-export default function LoginPage() {
-  const theme = useTheme();
+function LoginPage() {
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState(null);
 
-  const signIn = async (provider, formData) => {
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const credentials = {
-        email: formData.get('email'),
-        password: formData.get('password'),
-      };
-      const response = await loginUser(credentials);
-
+      await loginUser(credentials);
       // Update auth state
-      setAuth({
+      setAuth((prevAuth) => ({
+        ...prevAuth,
         isAuthenticated: true,
-        user: response.user,
-        role: response.user.role,
-      });
-
-      navigate('/'); // Redirect to home page after successful login
+      }));
+      navigate('/'); // Redirect to home
     } catch (error) {
-      alert(error.response?.data?.error || 'Invalid credentials');
+      setErrors(error.response?.data?.error || 'Invalid credentials');
     }
   };
 
   return (
-    <AppProvider theme={theme}>
-      <SignInPage signIn={signIn} providers={providers} />
-    </AppProvider>
+    <Box
+      sx={{
+        backgroundColor: '#121212',
+        color: '#ffffff',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',    // Center vertically
+        justifyContent: 'center', // Center horizontally
+      }}
+    >
+      <Container maxWidth="sm">
+        <Box
+          sx={{
+            p: 4,
+            boxShadow: 3,
+            borderRadius: 2,
+            backgroundColor: '#1e1e1e',
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            align="center"
+            sx={{ color: '#ffffff' }}
+          >
+            Login
+          </Typography>
+          {errors && (
+            <Typography color="error" align="center">
+              {errors}
+            </Typography>
+          )}
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <TextField
+              label="Email"
+              type="email"
+              name="email"
+              value={credentials.email}
+              onChange={handleChange}
+              required
+              fullWidth
+              margin="normal"
+              InputLabelProps={{ style: { color: '#ffffff' } }}
+              InputProps={{
+                style: { color: '#ffffff' },
+                sx: {
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#ffffff',
+                  },
+                },
+              }}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
+              required
+              fullWidth
+              margin="normal"
+              InputLabelProps={{ style: { color: '#ffffff' } }}
+              InputProps={{
+                style: { color: '#ffffff' },
+                sx: {
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#ffffff',
+                  },
+                },
+              }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 3 }}
+            >
+              Login
+            </Button>
+          </Box>
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ mt: 2, color: '#ffffff' }}
+          >
+            Don't have an account?{' '}
+            <MuiLink component={Link} to="/register" sx={{ color: '#90caf9' }}>
+              Register here.
+            </MuiLink>
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 }
+
+export default LoginPage;
