@@ -112,12 +112,27 @@ exports.updateProperty = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 
-    // If new images are uploaded, upload them to Cloudinary
+    // If new images are uploaded, delete the old images from Cloudinary
     if (req.files && req.files.length > 0) {
-      const images = req.files.map((file) => file.path);
-      req.body.images = images;
+      // Extract public IDs from the old image URLs
+      const oldPublicIds = property.images.map((imageUrl) => {
+        const parts = imageUrl.split('/');
+        const filenameWithExtension = parts[parts.length - 1]; // imagename.jpg
+        const publicId = filenameWithExtension.split('.')[0]; // imagename (without extension)
+        return `properties/${publicId}`; // Assuming the images are in the 'properties' folder
+      });
+
+      // Delete the old images from Cloudinary
+      for (const publicId of oldPublicIds) {
+        await cloudinary.uploader.destroy(publicId);
+      }
+
+      // Upload the new images to Cloudinary
+      const newImages = req.files.map((file) => file.path);
+      req.body.images = newImages; // Add the new image URLs to the request body
     }
 
+    // Update the property with new data from req.body
     const updatedProperty = await Property.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
