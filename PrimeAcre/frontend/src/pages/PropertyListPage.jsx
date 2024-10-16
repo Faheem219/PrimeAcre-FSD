@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { getProperties } from '../api/propertyAPI';
 import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box'; 
+import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
 
 function PropertyListPage() {
     const [properties, setProperties] = useState([]);
@@ -36,63 +36,86 @@ function PropertyListPage() {
     }
 
     return (
-        <Box sx={{ width: '100%', padding: 2, fontFamily: 'Proxima Nova, sans-serif' }}>
+        <Box
+            sx={{
+                width: '100%',
+                padding: { xs: 2, sm: 4 },
+                fontFamily: 'Proxima Nova, sans-serif',
+                backgroundColor: '#121212',
+                color: '#ffffff',
+                minHeight: '100vh',
+                overflow: 'hidden', // Prevent horizontal and vertical scroll bar
+                boxSizing: 'border-box', // Prevents padding from increasing overall width
+            }}
+        >
             {/* Customized Header */}
             <Box sx={{ textAlign: 'center', marginBottom: 4 }}>
-                <h1 style={{
-                    fontSize: '2.5rem', 
-                    fontWeight: 'bold',
-                    color: '#583952',
-                    textAlign: 'center',
-                    borderBottom: '2px solid #d3d3d3',
-                    paddingBottom: '10px',
-                    display: 'inline-block'
-                }}>
+                <Typography variant="h3" component="h1" sx={{ color: '#ff9800', fontWeight: 'bold', borderBottom: '2px solid #ff9800', display: 'inline-block', paddingBottom: 1 }}>
                     Properties
-                </h1>
+                </Typography>
             </Box>
 
-            {errors && <p style={{ color: 'red' }}>{errors}</p>}
+            {errors && <Typography color="error" sx={{ textAlign: 'center' }}>{errors}</Typography>}
             {properties.length > 0 ? (
-                <Grid container spacing={3} justifyContent="center">
+                <Grid container spacing={4} justifyContent="center" sx={{ margin: '0 auto', maxWidth: '100%' }}>
                     {properties.map((property) => (
                         <Grid item xs={12} sm={6} md={3} key={property._id}>
-                            <Paper 
-                                elevation={3} 
-                                sx={{ 
-                                    padding: 1, 
-                                    textAlign: 'center', 
-                                    borderRadius: '8px', 
-                                    backgroundColor: '#e4dbdb',
+                            <Card
+                                sx={{
+                                    backgroundColor: '#1e1e1e',
+                                    color: '#ffffff',
+                                    borderRadius: '12px',
+                                    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    justifyContent: 'space-between', // Space out the content
-                                    height: '100%' // Ensure full height for proper spacing
-                                }} 
+                                    height: '100%',
+                                    overflow: 'hidden', // Make sure card content doesn't overflow
+                                }}
                             >
-                                <Link to={`/properties/${property._id}`} style={{ textDecoration: 'none', flexGrow: 1 }}>
-                                    {/* Image at the top */}
-                                    {property.images && property.images.length > 0 && (
-                                        <img
-                                            src={property.images[0]}
-                                            alt={property.title}
-                                            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-                                        />
-                                    )}
-                                    <h2 style={{ fontSize: '1.2rem' }}>{property.title}</h2>
-                                    <p>Location: {property.location}</p>
-                                    <p>Price: ${property.price}</p>
-                                </Link>
-                                {/* 'Type' at the bottom left */}
-                                <p style={{ marginLeft: '8px', marginBottom: '8px', alignSelf: 'flex-start' }}>Type: {property.propertyType}</p>
-                                {/* change can be done over herre */}
-                            </Paper>
+                                {property.images && property.images.length > 0 && (
+                                    <CardMedia
+                                        component="img"
+                                        image={property.images[0]}
+                                        alt={property.title}
+                                        sx={{
+                                            height: 200,
+                                            borderTopLeftRadius: '12px',
+                                            borderTopRightRadius: '12px',
+                                        }}
+                                    />
+                                )}
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography variant="h5" component="div" sx={{ color: '#ff9800', fontWeight: 'bold', marginBottom: 2 }}>
+                                        {property.title}
+                                    </Typography>
+                                    <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
+                                        Location: {property.location}
+                                    </Typography>
+                                    <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
+                                        Price: ${property.price}
+                                    </Typography>
+                                    <Typography variant="body2" component="p" sx={{ fontStyle: 'italic', marginBottom: 1 }}>
+                                        Type: {property.propertyType}
+                                    </Typography>
+                                </CardContent>
+                                <Box sx={{ padding: 2 }}>
+                                    <Button
+                                        variant="contained"
+                                        fullWidth
+                                        component={Link}
+                                        to={`/properties/${property._id}`}
+                                        sx={{ backgroundColor: '#ff9800', '&:hover': { backgroundColor: '#ffb74d' } }}
+                                    >
+                                        View Details
+                                    </Button>
+                                </Box>
+                            </Card>
                         </Grid>
                     ))}
                 </Grid>
             ) : (
-                <Paper sx={{ padding: 2, textAlign: 'center' }}>
-                    <p>No properties available at the moment.</p>
+                <Paper sx={{ padding: 2, textAlign: 'center', backgroundColor: '#1e1e1e', color: '#ffffff' }}>
+                    <Typography variant="body1">No properties available at the moment.</Typography>
                 </Paper>
             )}
         </Box>
