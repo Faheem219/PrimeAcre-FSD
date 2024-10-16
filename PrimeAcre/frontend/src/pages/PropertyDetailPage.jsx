@@ -2,16 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPropertyById } from '../api/propertyAPI';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Box, Paper, Typography, Grid, Card, CardContent } from '@mui/material';
 import Slideshow from '../components/Slideshow';
 
 function PropertyDetailPage() {
     const { id } = useParams();
     const [property, setProperty] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState(null);
 
     useEffect(() => {
@@ -20,104 +16,101 @@ function PropertyDetailPage() {
                 const data = await getPropertyById(id);
                 setProperty(data);
             } catch (error) {
-                setErrors(error.response?.data?.error || 'An error occurred while fetching the property details');
-            } finally {
-                setLoading(false);
+                setErrors(error.response?.data?.error || 'An error occurred while fetching property details');
             }
         };
+
         fetchProperty();
     }, [id]);
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
-
-    if (errors) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Typography color="error">{errors}</Typography>
-            </Box>
-        );
+    if (!property) {
+        return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</Box>;
     }
 
     return (
-        <Box sx={{ padding: 4 }}>
-            <Paper
-                elevation={3}
-                sx={{
-                    padding: 4,
-                    backgroundColor: '#1e1e1e',
-                    color: '#ffffff',
-                    borderRadius: '12px',
-                    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
-                }}
-            >
-                <Typography variant="h4" sx={{ marginBottom: 3, color: '#ff9800' }}>
-                    {property.title}
-                </Typography>
+        <Box
+            sx={{
+                width: '100%',
+                minHeight: '100vh',
+                padding: 4,
+                fontFamily: 'Proxima Nova, sans-serif',
+                color: '#fff',
+                overflowX: 'hidden',  // Prevent horizontal scroll
+                boxSizing: 'border-box'  // Include padding and border in the element's width and height
+            }}
+        >
+            {/* Property Details */}
+            <Typography variant="h3" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#ff9800' }}>
+                {property.title}
+            </Typography>
 
-                {/* Slideshow for Property Images */}
-                {property.images && property.images.length > 0 && (
+            {/* Slideshow Component for Property Images */}
+            {property.images && property.images.length > 0 && (
+                <Box sx={{ maxWidth: '100%', overflow: 'hidden', marginBottom: 4 }}>
                     <Slideshow images={property.images} />
-                )}
-
-                <Box sx={{ marginTop: 4 }}>
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Description:
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        {property.description}
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Price:
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        ${property.price}
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Location:
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        {property.location}
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Size:
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        {property.size} sq ft
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Bedrooms:
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        {property.bedrooms}
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Bathrooms:
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        {property.bathrooms}
-                    </Typography>
-
-                    <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                        Type:
-                    </Typography>
-                    <Typography variant="body1">
-                        {property.propertyType}
-                    </Typography>
                 </Box>
+            )}
+
+            <Paper sx={{ padding: 3, backgroundColor: '#333', color: '#fff', marginBottom: 4 }}>
+                <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    <strong>Location:</strong> {property.location}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    <strong>Price:</strong> ${property.price}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    <strong>Size:</strong> {property.size} sq ft
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    <strong>Bedrooms:</strong> {property.bedrooms}
+                </Typography>
+                <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                    <strong>Bathrooms:</strong> {property.bathrooms}
+                </Typography>
+                <Typography variant="body1" sx={{ marginTop: 2 }}>
+                    <strong>Property Type:</strong> {property.propertyType}
+                </Typography>
+                <Typography variant="body1" sx={{ marginTop: 2 }}>
+                    <strong>Description:</strong> {property.description}
+                </Typography>
             </Paper>
+
+            {/* Comments Section */}
+            <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#ff9800' }}>
+                Comments
+            </Typography>
+
+            {property.reviews && property.reviews.length > 0 ? (
+                <Grid container spacing={2} justifyContent="flex-start">
+                    {property.reviews.map((review) => (
+                        <Grid item xs={12} sm={6} md={4} key={review._id}>
+                            <Card sx={{ backgroundColor: '#444', color: '#fff' }}>
+                                <CardContent>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                                        {review.client.firstName} {review.client.lastName}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ marginBottom: 1 }}>
+                                        <strong>Rating:</strong> {review.rating}/5
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        {review.comment}
+                                    </Typography>
+                                    <Typography variant="caption" sx={{ display: 'block', marginTop: 1, color: '#bbb' }}>
+                                        {new Date(review.createdAt).toLocaleDateString()}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                <Paper sx={{ padding: 2, textAlign: 'center', backgroundColor: '#333', color: '#fff' }}>
+                    <Typography>No comments available at the moment.</Typography>
+                </Paper>
+            )}
         </Box>
     );
 }
 
 export default PropertyDetailPage;
+s
