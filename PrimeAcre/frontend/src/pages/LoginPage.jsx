@@ -48,17 +48,20 @@ function LoginPage() {
         color: '#ffffff',
         minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center',    // Center vertically
+        alignItems: 'center', // Center vertically
         justifyContent: 'center', // Center horizontally
+        width: '100vw',
+        p: 2, // Add padding to prevent content touching the screen edge
       }}
     >
-      <Container maxWidth="sm">
+      <Container maxWidth="xs">
         <Box
           sx={{
             p: 4,
             boxShadow: 3,
             borderRadius: 2,
             backgroundColor: '#1e1e1e',
+            width: '100%',
           }}
         >
           <Typography

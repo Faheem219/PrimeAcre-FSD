@@ -58,9 +58,11 @@ function RegisterPage() {
         backgroundColor: '#121212',
         color: '#ffffff',
         minHeight: '100vh',
+        width: '100vw',
         display: 'flex',
-        alignItems: 'center', // Center horizontally
-        justifyContent: 'center', // Center vertically
+        alignItems: 'center', // Center vertically
+        justifyContent: 'center', // Center horizontally
+        p: 3,
       }}
     >
       <Container maxWidth="sm">
@@ -70,6 +72,9 @@ function RegisterPage() {
             boxShadow: 3,
             borderRadius: 2,
             backgroundColor: '#1e1e1e',
+            width: '100%',
+            maxWidth: '500px',
+            mx: 'auto', // Horizontal centering
           }}
         >
           <Typography
