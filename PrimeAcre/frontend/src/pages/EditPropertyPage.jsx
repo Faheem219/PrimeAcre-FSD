@@ -1,6 +1,7 @@
 // src/pages/EditPropertyPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 import { getPropertyById, updateProperty } from '../api/propertyAPI';
 
 import {
@@ -104,7 +105,11 @@ function EditPropertyPage() {
     };
 
     if (!propertyData) {
-        return <div>Loading...</div>;
+        return (
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box>
+          );
     }
 
     return (

@@ -2,6 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { getUserProfile } from '../api/userAPI';
 import { Link } from 'react-router-dom';
+import {
+    Box,
+    CircularProgress
+} from '@mui/material';
 
 function ClientProfilePage() {
     const [clientData, setClientData] = useState(null);
@@ -21,7 +25,11 @@ function ClientProfilePage() {
     }, []);
 
     if (!clientData) {
-        return <div>Loading...</div>;
+        return (
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box>
+          );
     }
 
     return (

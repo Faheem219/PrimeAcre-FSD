@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { getUserProfile } from '../api/userAPI';
 import { deleteProperty } from '../api/propertyAPI';
 import { Link } from 'react-router-dom';
+import {
+    Box,
+    CircularProgress
+} from '@mui/material';
 
 function AgentProfilePage() {
     const [agentData, setAgentData] = useState(null);
@@ -31,7 +35,11 @@ function AgentProfilePage() {
     };
 
     if (!agentData) {
-        return <div>Loading...</div>;
+        return (
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box>
+          );
     }
 
     return (
