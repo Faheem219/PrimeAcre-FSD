@@ -113,4 +113,3 @@ function PropertyDetailPage() {
 }
 
 export default PropertyDetailPage;
-s
