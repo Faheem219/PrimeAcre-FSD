@@ -1,9 +1,28 @@
-// src/pages/PropertyDetailPage.jsx
 import React, { useEffect, useState, useContext } from 'react';
 import { getPropertyById } from '../api/propertyAPI';
 import { getReviews, addReview } from '../api/reviewAPI';
 import { AuthContext } from '../contexts/AuthContext';
 import { useParams } from 'react-router-dom';
+import { Box, Stack, Typography, Card, CardContent, CardActions, Button, Grid } from '@mui/material';
+
+const ReviewCard = ({ review }) => (
+    <Card sx={{ backgroundColor: '#333', color: '#fff', marginBottom: 2 }}>
+        <CardContent>
+            <Typography gutterBottom variant="h6" component="div">
+                {review.client.firstName} {review.client.lastName} - Rating: {review.rating}
+            </Typography>
+            <Typography variant="body2">
+                {review.comment}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+                Date: {new Date(review.createdAt).toLocaleDateString()}
+            </Typography>
+        </CardContent>
+        <CardActions>
+            <Button size="small" sx={{ color: '#fff' }}>Read More</Button>
+        </CardActions>
+    </Card>
+);
 
 function PropertyDetailPage() {
     const { id } = useParams();
@@ -39,6 +58,11 @@ function PropertyDetailPage() {
         fetchReviews();
     }, [id]);
 
+    // Handle loading state
+    if (!property) {
+        return <div>Loading...</div>;
+    }
+
     const handleReviewChange = (e) => {
         setReviewForm({ ...reviewForm, [e.target.name]: e.target.value });
     };
@@ -55,92 +79,86 @@ function PropertyDetailPage() {
         }
     };
 
-    if (!property) {
-        return <div>Loading...</div>;
-    }
-
     return (
-        <div>
-            <h1>{property.title}</h1>
+        <Box sx={{ padding: 2 }}>
+            <Typography variant="h4">{property.title}</Typography>
             {errors && <p style={{ color: 'red' }}>{errors}</p>}
-            {/* Property Details */}
-            <p>Description: {property.description}</p>
-            <p>Price: ${property.price}</p>
-            <p>Location: {property.location}</p>
-            <p>Size: {property.size} sq ft</p>
-            <p>Bedrooms: {property.bedrooms}</p>
-            <p>Bathrooms: {property.bathrooms}</p>
-            <p>Type: {property.propertyType}</p>
-            <p>Status: {property.status}</p>
-            <p>Date Listed: {new Date(property.dateListed).toLocaleDateString()}</p>
+
             {/* Property Images */}
             {property.images && property.images.length > 0 && (
-                <div>
-                    <h3>Images:</h3>
-                    {property.images.map((src, index) => (
-                        <img
-                            key={index}
-                            src={src}
-                            alt={`Property Image ${index + 1}`}
-                            style={{ width: '200px', marginRight: '10px' }}
-                        />
-                    ))}
-                </div>
+                <Box sx={{ marginBottom: 2, display: 'flex', justifyContent: 'center' }}>
+                    <Stack direction="row" spacing={3}>
+                        {property.images.map((src, index) => (
+                            <img
+                                key={index}
+                                src={src}
+                                alt={`Property Image ${index + 1}`}
+                                style={{ width: '200px', borderRadius: '8px', margin: '0 10px' }} // Added margin for each image
+                            />
+                        ))}
+                    </Stack>
+                </Box>
             )}
+
+            {/* Property Details */}
+            <Typography variant="body1">Description: {property.description}</Typography>
+            <Typography variant="body1">Price: ${property.price}</Typography>
+            <Typography variant="body1">Location: {property.location}</Typography>
+            <Typography variant="body1">Size: {property.size} sq ft</Typography>
+            <Typography variant="body1">Bedrooms: {property.bedrooms}</Typography>
+            <Typography variant="body1">Bathrooms: {property.bathrooms}</Typography>
+            <Typography variant="body1">Type: {property.propertyType}</Typography>
+            <Typography variant="body1">Status: {property.status}</Typography>
+            <Typography variant="body1">Agent: {property.agent.firstName} {property.agent.last}</Typography>
+            <Typography variant="body1">Date Listed: {new Date(property.dateListed).toLocaleDateString()}</Typography>
+
             {/* Reviews */}
-            <h2>Reviews</h2>
+            <Typography variant="h5" sx={{ marginTop: 4 }}>Reviews</Typography>
             {reviews && reviews.length > 0 ? (
-                <ul>
+                <Grid container spacing={3}>
                     {reviews.map((review) => (
-                        <li key={review._id}>
-                            <strong>
-                                {review.client.firstName} {review.client.lastName} - Rating: {review.rating}
-                            </strong>
-                            <p>{review.comment}</p>
-                            <p>Date: {new Date(review.createdAt).toLocaleDateString()}</p>
-                        </li>
+                        <Grid item xs={12} sm={6} md={4} key={review._id}>
+                            <ReviewCard review={review} />
+                        </Grid>
                     ))}
-                </ul>
+                </Grid>
             ) : (
-                <p>No reviews yet.</p>
+                <Typography>No reviews yet.</Typography>
             )}
+
             {/* Add Review Form */}
             {auth.isAuthenticated && auth.user.role === 'Client' && (
-                <div>
-                    <h3>Add a Review</h3>
-                    <form onSubmit={handleReviewSubmit}>
-                        {/* Rating */}
-                        <label>
-                            Rating:
-                            <select
-                                name="rating"
-                                value={reviewForm.rating}
-                                onChange={handleReviewChange}
-                                required
-                            >
-                                <option value="">Select rating</option>
-                                {[1, 2, 3, 4, 5].map((num) => (
-                                    <option key={num} value={num}>
-                                        {num}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                        {/* Comment */}
-                        <label>
-                            Comment:
-                            <textarea
-                                name="comment"
-                                value={reviewForm.comment}
-                                onChange={handleReviewChange}
-                            />
-                        </label>
-                        {/* Submit Button */}
-                        <button type="submit">Submit Review</button>
-                    </form>
-                </div>
+                <Box component="form" onSubmit={handleReviewSubmit} sx={{ marginTop: 2 }}>
+                    <Typography variant="h6">Add a Review</Typography>
+                    <label>
+                        Rating:
+                        <select
+                            name="rating"
+                            value={reviewForm.rating}
+                            onChange={handleReviewChange}
+                            required
+                        >
+                            <option value="">Select rating</option>
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <option key={num} value={num}>
+                                    {num}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <label>
+                        Comment:
+                        <textarea
+                            name="comment"
+                            value={reviewForm.comment}
+                            onChange={handleReviewChange}
+                            required
+                        />
+                    </label>
+                    <Button type="submit" variant="contained">Submit Review</Button>
+                </Box>
             )}
-        </div>
+        </Box>
     );
 }
 
