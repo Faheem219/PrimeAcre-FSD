@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Typography, Button, Box, Grid, Card, CardContent, CardMedia, Avatar, Paper } from '@mui/material';
+import { Container, Typography, Box, Grid, Card, CardContent, CardMedia, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Carousel from 'react-material-ui-carousel';
+import { AwesomeButton } from "react-awesome-button";
+import "react-awesome-button/dist/styles.css";
+import { getProperties } from '../api/propertyAPI';
 
 // Create styles for dark theme and background image section
 const useStyles = makeStyles(() => ({
     root: {
-        backgroundColor: '#1a1a1a',
+        backgroundColor: '#121212',
         minHeight: '100vh',
         color: '#ffffff',
         paddingBottom: '50px',
+        overflowX: 'hidden', // Prevent horizontal scroll
     },
     header: {
         textAlign: 'center',
@@ -18,7 +22,8 @@ const useStyles = makeStyles(() => ({
     },
     heroSection: {
         position: 'relative',
-        height: '500px',
+        width: '100vw',
+        height: '100vh',
         backgroundImage: 'url(/src/assets/images/hero.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -49,33 +54,50 @@ const useStyles = makeStyles(() => ({
         margin: '20px auto',
         backgroundColor: '#2a2a2a',
         color: '#ffffff',
+        borderRadius: '15px',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+        overflow: 'hidden',
     },
-    testimonialSection: {
-        backgroundColor: '#2a2a2a',
-        padding: '60px 0',
+    carouselContainer: {
+        maxWidth: '1200px',
+        margin: '0 auto',
     },
-    testimonialCard: {
-        maxWidth: 600,
-        margin: '20px auto',
-        padding: '30px',
-        backgroundColor: '#3a3a3a',
+    propertyButton: {
+        width: '100%',
+        marginTop: '10px',
+        padding: '10px',
+        fontSize: '16px',
+        textTransform: 'none',
+    },
+    cleanBox: {
+        background: 'linear-gradient(145deg, #1e1e1e, #2e2e2e)',
+        boxShadow: '10px 10px 20px #0e0e0e, -10px -10px 20px #3e3e3e',
+        borderRadius: '15px',
+        padding: '20px',
         color: '#ffffff',
     },
-    testimonialAvatar: {
-        width: 60,
-        height: 60,
-        marginRight: '15px',
-        backgroundColor: '#ff9800',
-    },
-    testimonialContent: {
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: '20px',
-    },
+    propertyTitle: {
+        color: '#ff9800',
+        fontWeight: 'bold',
+    }
 }));
 
 const HomePage = () => {
     const classes = useStyles();
+    const [properties, setProperties] = useState([]);
+
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const data = await getProperties();
+                setProperties(data);
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+            }
+        };
+
+        fetchProperties();
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -100,29 +122,38 @@ const HomePage = () => {
             </Box>
 
             {/* Featured Properties Carousel Section */}
-            <Container className={classes.section}>
+            <Container className={`${classes.section} ${classes.carouselContainer}`}>
                 <Typography variant="h4" gutterBottom>
                     Featured Properties
                 </Typography>
                 <Carousel animation="slide" indicators={false} navButtonsAlwaysVisible={true}>
-                    {[1, 2, 3].map((item, index) => (
-                        <Card className={classes.propertyCard} key={index}>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={`https://via.placeholder.com/600x400?text=Property+${index + 1}`}
-                                alt={`Property ${index + 1}`}
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Property {index + 1}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Stunning property with modern amenities.
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    ))}
+                    {properties.length > 0 ? (
+                        properties.map((property, index) => (
+                            <Box key={index} className={classes.cleanBox} style={{ maxWidth: '500px', margin: '0 auto' }}>
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={property.images && property.images.length > 0 ? property.images[0] : 'https://via.placeholder.com/600x400?text=Property'}
+                                    alt={property.title}
+                                    style={{ borderRadius: '15px' }}
+                                />
+                                <Box style={{ padding: '20px' }}>
+                                    <Typography variant="h5" className={classes.propertyTitle}>
+                                        {property.title}
+                                    </Typography>
+                                    <AwesomeButton
+                                        type="primary"
+                                        href={`/properties/${property._id}`}
+                                        className={classes.propertyButton}
+                                    >
+                                        View Property - ${property.price}
+                                    </AwesomeButton>
+                                </Box>
+                            </Box>
+                        ))
+                    ) : (
+                        <Typography variant="body1">No featured properties available.</Typography>
+                    )}
                 </Carousel>
             </Container>
 
@@ -133,58 +164,31 @@ const HomePage = () => {
                 </Typography>
                 <Grid container spacing={4} justifyContent="center">
                     <Grid item xs={12} md={4}>
-                        <Typography variant="h6">Expert Agents</Typography>
-                        <Typography variant="body1">
-                            Our agents have deep market knowledge and are committed to providing excellent service.
-                        </Typography>
+                        <Box className={classes.cleanBox}>
+                            <Typography variant="h6">Expert Agents</Typography>
+                            <Typography variant="body1">
+                                Our agents have deep market knowledge and are committed to providing excellent service.
+                            </Typography>
+                        </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Typography variant="h6">Wide Selection</Typography>
-                        <Typography variant="body1">
-                            Choose from a diverse range of properties to fit every need and budget.
-                        </Typography>
+                        <Box className={classes.cleanBox}>
+                            <Typography variant="h6">Wide Selection</Typography>
+                            <Typography variant="body1">
+                                Choose from a diverse range of properties to fit every need and budget.
+                            </Typography>
+                        </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Typography variant="h6">Trusted Partners</Typography>
-                        <Typography variant="body1">
-                            We are trusted by thousands of happy clients. Your dream property is our mission.
-                        </Typography>
+                        <Box className={classes.cleanBox}>
+                            <Typography variant="h6">Trusted Partners</Typography>
+                            <Typography variant="body1">
+                                We are trusted by thousands of happy clients. Your dream property is our mission.
+                            </Typography>
+                        </Box>
                     </Grid>
                 </Grid>
             </Container>
-
-            {/* Testimonials Section */}
-            <Box className={classes.testimonialSection}>
-                <Container>
-                    <Typography variant="h4" gutterBottom>
-                        What Our Clients Say
-                    </Typography>
-                    <Grid container spacing={4} justifyContent="center">
-                        {[{
-                            text: 'PrimeAcre made finding my dream home so easy and enjoyable!',
-                            author: 'John Doe',
-                        }, {
-                            text: 'Their agents are simply the best! Very knowledgeable and friendly.',
-                            author: 'Jane Smith',
-                        }, {
-                            text: 'Highly recommend PrimeAcre for anyone looking for hassle-free property buying.',
-                            author: 'Emma Wilson',
-                        }].map((testimonial, index) => (
-                            <Grid item xs={12} md={6} key={index}>
-                                <Paper className={classes.testimonialCard} elevation={3}>
-                                    <Box className={classes.testimonialContent}>
-                                        <Avatar className={classes.testimonialAvatar}>{testimonial.author[0]}</Avatar>
-                                        <Box>
-                                            <Typography variant="body1">{testimonial.text}</Typography>
-                                            <Typography variant="subtitle2" color="text.secondary">- {testimonial.author}</Typography>
-                                        </Box>
-                                    </Box>
-                                </Paper>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Container>
-            </Box>
         </div>
     );
 };
@@ -192,5 +196,6 @@ const HomePage = () => {
 export default HomePage;
 
 /* Installation Instructions for New Packages */
-// Run the following command to install the necessary package for the above code:
+// Run the following commands to install the necessary packages for the above code:
 // Carousel: npm install react-material-ui-carousel
+// Awesome Button: npm install react-awesome-button
