@@ -15,7 +15,7 @@ import {
 import { styled } from '@mui/material/styles';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundImage: 'linear-gradient(to right, #374151, #1f2937)',
+  backgroundImage: 'linear-gradient(to right, #8517ff, #6b0000)',
 }));
 
 const Header = () => {

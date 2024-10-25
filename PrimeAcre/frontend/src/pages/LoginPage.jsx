@@ -52,9 +52,23 @@ function LoginPage() {
         justifyContent: 'center', // Center horizontally
         width: '100vw',
         p: 2, // Add padding to prevent content touching the screen edge
+        position: 'relative',
       }}
     >
-      <Container maxWidth="xs">
+      <Container maxWidth="xs" sx={{ position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '-30px',
+            left: '-30px',
+            right: '-30px',
+            bottom: '-30px',
+            zIndex: -1,
+            borderRadius: 3,
+            background: 'linear-gradient(90deg, #44ff9a -0.55%, #44b0ff 22.86%, #8b44ff 48.36%, #ff6644 73.33%, #ebff70 99.34%)',
+            filter: 'blur(45px)',
+          }}
+        ></Box>
         <Box
           sx={{
             p: 4,
@@ -122,7 +136,7 @@ function LoginPage() {
               variant="contained"
               color="primary"
               fullWidth
-              sx={{ mt: 3 }}
+              sx={{ mt: 3, backgroundColor: '#44b0ff', '&:hover': { backgroundColor: '#3578e5' } }}
             >
               Login
             </Button>
