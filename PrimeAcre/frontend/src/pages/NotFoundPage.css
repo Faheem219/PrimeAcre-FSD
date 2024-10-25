@@ -7,15 +7,6 @@
     box-sizing: border-box;
 }
 
-/* Global styles */
-html,
-body {
-    height: 100%;
-    margin: 0;
-    background: #000;
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-}
-
 /* Container to cover full page */
 .not-found-container {
     display: flex;

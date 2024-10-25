@@ -114,7 +114,7 @@ const Footer = () => {
                             <Link color="inherit" sx={{ display: 'block', my: 1 }}>
                                 <div onClick={handleContactArrowClick}>Contact Us</div>
                                 {isFormVisible && (
-                                    <div className="visme_d" data-title="Email Contact Form" data-url="n0ed46zn-email-contact-form?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="85732"></div>
+                                    <div className="visme_d" data-title="Contact Form" data-url="4d6vvmxy-contact-form?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="99899"></div>
                                 )}
                             </Link>
                         </Box>
