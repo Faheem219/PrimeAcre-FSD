@@ -11,7 +11,7 @@ import ClientReviews from '../components/clientReviews';
 // Create styles for dark theme and background image section
 const useStyles = makeStyles(() => ({
     root: {
-        backgroundColor: '#121212',
+        backgroundColor: '#000',
         minHeight: '100vh',
         color: '#ffffff',
         paddingBottom: '50px',
@@ -191,7 +191,7 @@ const HomePage = () => {
                 </Grid>
             </Container>
 
-            <ClientReviews/>
+            <ClientReviews />
         </div>
     );
 };
