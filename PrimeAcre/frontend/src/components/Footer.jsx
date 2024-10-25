@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Box, Typography, Container, Link, IconButton, Grid } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -7,6 +7,32 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Footer = () => {
+
+  const [isFormVisible, setFormVisible] = useState(false);
+
+  const handleContactArrowClick = () => {
+    setFormVisible(!isFormVisible);
+  };
+
+  useEffect(() => {
+    let timer;
+    if (isFormVisible) {
+      const script = document.createElement('script');
+      script.src = "https://static-bundles.visme.co/forms/vismeforms-embed.js";
+      script.async = true;
+      document.body.appendChild(script);
+
+      timer = setTimeout(() => {
+        setFormVisible(false);
+      }, 1000000); // Adjust the time (in milliseconds) as needed
+
+      return () => {
+        document.body.removeChild(script);
+        clearTimeout(timer);
+      };
+    }
+  }, [isFormVisible]);
+
     return (
         <Box
             component="footer"
@@ -85,8 +111,11 @@ const Footer = () => {
                             <Link href="/terms-of-service" color="inherit" sx={{ display: 'block', my: 1 }}>
                                 Terms of Service
                             </Link>
-                            <Link href="/contact-us" color="inherit" sx={{ display: 'block', my: 1 }}>
-                                Contact Us
+                            <Link color="inherit" sx={{ display: 'block', my: 1 }}>
+                                <div onClick={handleContactArrowClick}>Contact Us</div>
+                                {isFormVisible && (
+                                    <div className="visme_d" data-title="Email Contact Form" data-url="n0ed46zn-email-contact-form?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="85732"></div>
+                                )}
                             </Link>
                         </Box>
                     </Grid>
