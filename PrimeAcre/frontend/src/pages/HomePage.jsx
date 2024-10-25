@@ -6,6 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 import { getProperties } from '../api/propertyAPI';
+import ClientReviews from '../components/clientReviews';
 
 // Create styles for dark theme and background image section
 const useStyles = makeStyles(() => ({
@@ -189,6 +190,8 @@ const HomePage = () => {
                     </Grid>
                 </Grid>
             </Container>
+
+            <ClientReviews/>
         </div>
     );
 };
