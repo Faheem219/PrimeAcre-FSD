@@ -1,15 +1,21 @@
 // src/pages/NotFoundPage.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
 
-function NotFoundPage() {
+import React from 'react';
+import './NotFoundPage.css'; // Ensure the CSS file is in the same directory
+
+const NotFoundPage = () => {
   return (
-    <div>
-      <h1>404 - Not Found</h1>
-      <p>The page you're looking for does not exist.</p>
-      <Link to="/">Go back to home</Link>
+    <div className="not-found-body">
+      <div className="head">
+        <div className="meta"></div>
+        <div className="meta"></div>
+      </div>
+      <div className="message">
+        <div className="error-code">404</div>
+        <div className="error-text">Got lost? How.....?  why.....?  Ahhhh....</div>
+      </div>
     </div>
   );
-}
+};
 
 export default NotFoundPage;
