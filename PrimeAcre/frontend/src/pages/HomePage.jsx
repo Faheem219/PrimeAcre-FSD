@@ -65,7 +65,6 @@ const useStyles = makeStyles(() => ({
     propertyButton: {
         width: '100%',
         marginTop: '10px',
-        padding: '10px',
         fontSize: '16px',
         textTransform: 'none',
     },
@@ -158,31 +157,32 @@ const HomePage = () => {
             </Container>
 
             {/* Why Choose Us Section */}
+            {/* Why Choose Us Section */}
             <Container className={classes.section}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" style={{ marginBottom: '40px' }}>
                     Why Choose PrimeAcre?
                 </Typography>
                 <Grid container spacing={4} justifyContent="center">
                     <Grid item xs={12} md={4}>
-                        <Box className={classes.cleanBox}>
-                            <Typography variant="h6">Expert Agents</Typography>
-                            <Typography variant="body1">
+                        <Box className={classes.cleanBox} sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Typography variant="h4" style={{ marginBottom: '35px' }}>Expert Agents</Typography>
+                            <Typography variant="body1" textAlign="center">
                                 Our agents have deep market knowledge and are committed to providing excellent service.
                             </Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Box className={classes.cleanBox}>
-                            <Typography variant="h6">Wide Selection</Typography>
-                            <Typography variant="body1">
+                        <Box className={classes.cleanBox} sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Typography variant="h4" style={{ marginBottom: '40px' }}>Wide Selection</Typography>
+                            <Typography variant="body1" textAlign="center">
                                 Choose from a diverse range of properties to fit every need and budget.
                             </Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Box className={classes.cleanBox}>
-                            <Typography variant="h6">Trusted Partners</Typography>
-                            <Typography variant="body1">
+                        <Box className={classes.cleanBox} sx={{ height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Typography variant="h4" style={{ marginBottom: '35px' }}>Trusted Partners</Typography>
+                            <Typography variant="body1" textAlign="center">
                                 We are trusted by thousands of happy clients. Your dream property is our mission.
                             </Typography>
                         </Box>
