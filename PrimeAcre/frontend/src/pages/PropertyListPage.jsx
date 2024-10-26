@@ -29,8 +29,18 @@ function PropertyListPage() {
 
     if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
+            <Box
+                sx={{
+                    minHeight: '100vh',
+                    minWidth: '100vw',
+                    backgroundColor: '#121212',
+                    color: '#FFFFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <CircularProgress sx={{ color: '#ff9800' }} />
             </Box>
         );
     }

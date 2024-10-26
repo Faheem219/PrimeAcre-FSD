@@ -8,7 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from 'react-router-dom';
 import { getPropertyById } from '../api/propertyAPI';
 import { getReviews, addReview, updateReview } from '../api/reviewAPI'; // Import updateReview function
-import { Box, Paper, Typography, Grid, Card, CardContent, Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Rating, IconButton } from '@mui/material';
+import { Box, Paper, Typography, Grid, Card, CardContent, Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Rating, IconButton, CircularProgress } from '@mui/material';
 import Slideshow from '../components/Slideshow';
 import { AuthContext } from '../contexts/AuthContext'; // Assuming you have AuthContext for client authentication
 
@@ -86,7 +86,21 @@ function PropertyDetailPage() {
     };
 
     if (!property) {
-        return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</Box>;
+        return (
+            <Box
+                sx={{
+                    minHeight: '100vh',
+                    minWidth: '100vw',
+                    backgroundColor: '#121212',
+                    color: '#FFFFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <CircularProgress sx={{ color: '#ff9800' }} />
+            </Box>
+        );
     }
 
     return (
