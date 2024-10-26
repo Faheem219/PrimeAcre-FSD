@@ -1,4 +1,3 @@
-// src/pages/ClientProfilePage.jsx
 import React, { useEffect, useState } from 'react';
 import { getUserProfile } from '../api/userAPI';
 import { Link } from 'react-router-dom';
@@ -15,11 +14,14 @@ function ClientProfilePage() {
     const [clientData, setClientData] = useState(null);
     const [errors, setErrors] = useState(null);
 
+    // Fetch client profile data
     const fetchClientData = async () => {
         try {
             const data = await getUserProfile();
+            console.log("Fetched client data:", data); // Debug log to check the API response
             setClientData(data);
         } catch (error) {
+            console.error("Error fetching client data:", error); // Debug log for errors
             setErrors(error.response?.data?.error || 'An error occurred');
         }
     };
@@ -28,6 +30,7 @@ function ClientProfilePage() {
         fetchClientData();
     }, []);
 
+    // Check if the clientData is still loading
     if (!clientData) {
         return (
             <Box
@@ -112,15 +115,15 @@ function ClientProfilePage() {
                 </Grid>
             </Paper>
 
-            {/* Interested Properties */}
+            {/* Interested Properties Section */}
             <Box style={{ marginBottom: '40px' }}>
                 <Typography variant="h4" sx={{ color: '#ff9800', marginBottom: '20px' }}>
                     Interested Properties
                 </Typography>
                 {clientData.interestedProperties && clientData.interestedProperties.length > 0 ? (
                     <Grid container spacing={8}>
-                        {clientData.interestedProperties.map((property) => (
-                            <Grid item xs={12} sm={6} md={4} key={property._id}>
+                        {clientData.interestedProperties.map((property, index) => (
+                            <Grid item xs={12} sm={6} md={4} key={index}>
                                 <Paper
                                     elevation={4}
                                     sx={{
@@ -132,6 +135,9 @@ function ClientProfilePage() {
                                         height: '100%',
                                     }}
                                 >
+                                    {/* Debug log to ensure we're getting the property data */}
+                                    {console.log("Rendering interested property:", property)}
+
                                     {/* Property Image */}
                                     {property.imageUrl && (
                                         <img

@@ -6,23 +6,24 @@ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from 'react-router-dom';
-import { getPropertyById } from '../api/propertyAPI';
-import { getReviews, addReview, updateReview } from '../api/reviewAPI'; // Import updateReview function
+import { getPropertyById, markPropertyAsInterested } from '../api/propertyAPI'; // Import the new API function
+import { getReviews, addReview, updateReview } from '../api/reviewAPI';
 import { Box, Paper, Typography, Grid, Card, CardContent, Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Rating, IconButton, CircularProgress } from '@mui/material';
 import Slideshow from '../components/Slideshow';
-import { AuthContext } from '../contexts/AuthContext'; // Assuming you have AuthContext for client authentication
+import { AuthContext } from '../contexts/AuthContext';
 
 function PropertyDetailPage() {
     const { id } = useParams();
-    const { auth } = useContext(AuthContext); // Check authentication status
+    const { auth } = useContext(AuthContext);
     const [property, setProperty] = useState(null);
-    const [reviews, setReviews] = useState([]); // State to store reviews
+    const [reviews, setReviews] = useState([]);
     const [errors, setErrors] = useState(null);
     const [showDescription, setShowDescription] = useState(false);
-    const [openReviewForm, setOpenReviewForm] = useState(false); // State to handle form visibility
-    const [openEditForm, setOpenEditForm] = useState(false); // State to handle edit form visibility
-    const [reviewData, setReviewData] = useState({ rating: 0, comment: '' }); // State for review data
-    const [editReviewId, setEditReviewId] = useState(null); // ID of the review being edited
+    const [openReviewForm, setOpenReviewForm] = useState(false);
+    const [openEditForm, setOpenEditForm] = useState(false);
+    const [reviewData, setReviewData] = useState({ rating: 0, comment: '' });
+    const [editReviewId, setEditReviewId] = useState(null);
+    const [isInterested, setIsInterested] = useState(false); // State to handle interested status
 
     useEffect(() => {
         // Fetch property and reviews data
@@ -31,7 +32,13 @@ function PropertyDetailPage() {
                 const propertyData = await getPropertyById(id);
                 setProperty(propertyData);
 
-                const reviewsData = await getReviews(id); // Fetch reviews for the property
+                // Check if the property is already marked as interested by the client
+                if (auth.isAuthenticated && auth.role === 'Client' && propertyData.interestedClients) {
+                    const isClientInterested = propertyData.interestedClients.includes(auth.user.id);
+                    setIsInterested(isClientInterested);
+                }
+
+                const reviewsData = await getReviews(id);
                 setReviews(reviewsData);
             } catch (error) {
                 setErrors(error.response?.data?.error || 'An error occurred while fetching data');
@@ -39,13 +46,24 @@ function PropertyDetailPage() {
         };
 
         fetchData();
-    }, [id]);
+    }, [id, auth.isAuthenticated, auth.role, auth.user]);
+
+    // Function to mark property as interested
+    const handleMarkAsInterested = async () => {
+        if (!auth.isAuthenticated || auth.role !== 'Client') return;
+        try {
+            await markPropertyAsInterested(id);
+            setIsInterested(true); // Update state to reflect the interested status
+        } catch (error) {
+            setErrors(error.response?.data?.error || 'An error occurred while marking the property as interested');
+        }
+    };
 
     // Handle opening and closing of the review form
     const handleOpenReviewForm = () => setOpenReviewForm(true);
     const handleCloseReviewForm = () => {
         setOpenReviewForm(false);
-        setReviewData({ rating: 0, comment: '' }); // Reset form data
+        setReviewData({ rating: 0, comment: '' });
     };
 
     // Handle opening and closing of the edit form
@@ -56,17 +74,16 @@ function PropertyDetailPage() {
     };
     const handleCloseEditForm = () => {
         setOpenEditForm(false);
-        setReviewData({ rating: 0, comment: '' }); // Reset form data
+        setReviewData({ rating: 0, comment: '' });
         setEditReviewId(null);
     };
 
     // Handle form submission for adding a new review
     const handleReviewSubmit = async () => {
         try {
-            const newReview = await addReview(id, reviewData); // Send review data to API
-            setReviews((prev) => [...prev, newReview]); // Update local state with the new review
+            const newReview = await addReview(id, reviewData);
+            setReviews((prev) => [...prev, newReview]);
             handleCloseReviewForm();
-            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while submitting the review');
         }
@@ -75,12 +92,11 @@ function PropertyDetailPage() {
     // Handle form submission for updating an existing review
     const handleReviewUpdate = async () => {
         try {
-            const updatedReview = await updateReview(id, editReviewId, reviewData); // Update review data via API
+            const updatedReview = await updateReview(id, editReviewId, reviewData);
             setReviews((prev) =>
                 prev.map((review) => (review._id === editReviewId ? updatedReview : review))
-            ); // Update the local state with the edited review
+            );
             handleCloseEditForm();
-            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while updating the review');
         }
@@ -120,6 +136,23 @@ function PropertyDetailPage() {
             <Typography variant="h3" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#ff9800' }}>
                 {property.title}
             </Typography>
+
+            {/* "Mark as Interested" Button */}
+            {auth.isAuthenticated && auth.role === 'Client' && (
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleMarkAsInterested}
+                    sx={{
+                        marginBottom: 3,
+                        backgroundColor: isInterested ? '#757575' : '#ff9800',
+                        '&:hover': { backgroundColor: isInterested ? '#757575' : '#ff7043' },
+                    }}
+                    disabled={isInterested}
+                >
+                    {isInterested ? 'Marked as Interested' : 'Mark as Interested'}
+                </Button>
+            )}
 
             {/* Slideshow Component for Property Images */}
             {property.images && property.images.length > 0 && (

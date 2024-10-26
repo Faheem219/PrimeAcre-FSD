@@ -24,5 +24,6 @@ router.patch(
   propertyController.updateProperty
 );
 router.delete('/:id', isAuthenticated, isAgent, propertyController.deleteProperty);
+router.post('/:propertyId/interested', isAuthenticated, propertyController.markPropertyAsInterested);
 
 module.exports = router;
