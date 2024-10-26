@@ -91,7 +91,7 @@ function PropertyDetailPage() {
     return (
         <Box
             sx={{
-                width: '100%',
+                width: '100vw',
                 minHeight: '100vh',
                 padding: 4,
                 fontFamily: 'Proxima Nova, sans-serif',
