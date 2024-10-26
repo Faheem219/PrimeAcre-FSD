@@ -1,8 +1,7 @@
-// src/pages/LoginPage.jsx
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { loginUser } from '../api/authAPI';
 import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import {
   Container,
@@ -10,17 +9,32 @@ import {
   Typography,
   TextField,
   Button,
-  Link as MuiLink,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
+
+import './authStyles.css'; // Import custom CSS for animations
 
 function LoginPage() {
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
   });
   const [errors, setErrors] = useState(null);
+
+  // Determine if currently on the register page based on URL
+  const isRegister = location.pathname === '/register';
+
+  // State to handle animation direction
+  const [animationClass, setAnimationClass] = useState('slide-in-left');
+
+  useEffect(() => {
+    // Set the animation class based on navigation
+    setAnimationClass(isRegister ? 'slide-in-left' : 'slide-in-right');
+  }, [isRegister]);
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -30,51 +44,48 @@ function LoginPage() {
     e.preventDefault();
     try {
       await loginUser(credentials);
-      // Update auth state
       setAuth((prevAuth) => ({
         ...prevAuth,
         isAuthenticated: true,
       }));
-      navigate('/'); // Redirect to home
+      navigate('/');
     } catch (error) {
       setErrors(error.response?.data?.error || 'Invalid credentials');
+    }
+  };
+
+  const handleToggle = () => {
+    if (!isRegister) {
+      setAnimationClass('slide-out-left');
+      setTimeout(() => navigate('/register'), 300); // Navigate after animation ends
     }
   };
 
   return (
     <Box
       sx={{
-        backgroundColor: '#121212',
+        backgroundColor: '#202040',
         color: '#ffffff',
         minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center', // Center vertically
-        justifyContent: 'center', // Center horizontally
+        alignItems: 'center',
+        justifyContent: 'center',
         width: '100vw',
-        p: 2, // Add padding to prevent content touching the screen edge
+        p: 2,
         position: 'relative',
+        backgroundImage: 'url(/path-to-your-background-image.jpg)',
+        backgroundSize: 'cover',
+        backgroundBlendMode: 'overlay',
       }}
     >
       <Container maxWidth="xs" sx={{ position: 'relative' }}>
         <Box
-          sx={{
-            position: 'absolute',
-            top: '-30px',
-            left: '-30px',
-            right: '-30px',
-            bottom: '-30px',
-            zIndex: -1,
-            borderRadius: 3,
-            background: 'linear-gradient(90deg, #44ff9a -0.55%, #44b0ff 22.86%, #8b44ff 48.36%, #ff6644 73.33%, #ebff70 99.34%)',
-            filter: 'blur(45px)',
-          }}
-        ></Box>
-        <Box
+          className={`form-container ${animationClass}`} // Apply animation class
           sx={{
             p: 4,
             boxShadow: 3,
-            borderRadius: 2,
-            backgroundColor: '#1e1e1e',
+            borderRadius: 3,
+            backgroundColor: 'rgba(30, 30, 30, 0.8)',
             width: '100%',
           }}
         >
@@ -83,16 +94,16 @@ function LoginPage() {
             component="h1"
             gutterBottom
             align="center"
-            sx={{ color: '#ffffff' }}
+            sx={{ color: '#ffffff', fontWeight: 'bold' }}
           >
-            Login
+            Welcome back!
           </Typography>
           {errors && (
             <Typography color="error" align="center">
               {errors}
             </Typography>
           )}
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <TextField
               label="Email"
               type="email"
@@ -102,6 +113,7 @@ function LoginPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -110,6 +122,10 @@ function LoginPage() {
                     borderColor: '#ffffff',
                   },
                 },
+              }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
               }}
             />
             <TextField
@@ -121,6 +137,7 @@ function LoginPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -130,27 +147,41 @@ function LoginPage() {
                   },
                 },
               }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
+              }}
             />
             <Button
               type="submit"
               variant="contained"
-              color="primary"
               fullWidth
-              sx={{ mt: 3, backgroundColor: '#44b0ff', '&:hover': { backgroundColor: '#3578e5' } }}
+              sx={{
+                mt: 3,
+                backgroundColor: '#ff6b6b',
+                color: '#ffffff',
+                '&:hover': { backgroundColor: '#ff5252' },
+                fontWeight: 'bold',
+              }}
             >
-              Login
+              LOG IN
             </Button>
           </Box>
-          <Typography
-            variant="body2"
-            align="center"
-            sx={{ mt: 2, color: '#ffffff' }}
-          >
-            Don't have an account?{' '}
-            <MuiLink component={Link} to="/register" sx={{ color: '#90caf9' }}>
-              Register here.
-            </MuiLink>
-          </Typography>
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography variant="body2" sx={{ color: '#ffffff', mr: 1 }}>
+              Don't have an account? Click here →
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isRegister}
+                  onChange={handleToggle}
+                  color="secondary"
+                />
+              }
+              label=""
+            />
+          </Box>
         </Box>
       </Container>
     </Box>
