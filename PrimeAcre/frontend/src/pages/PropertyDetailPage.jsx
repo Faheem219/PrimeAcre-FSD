@@ -66,6 +66,7 @@ function PropertyDetailPage() {
             const newReview = await addReview(id, reviewData); // Send review data to API
             setReviews((prev) => [...prev, newReview]); // Update local state with the new review
             handleCloseReviewForm();
+            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while submitting the review');
         }
