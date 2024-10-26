@@ -29,15 +29,14 @@ const ClientReviews = () => {
                                         </div>
 
                                         <blockquote className="flex-1 mt-8">
-                                            <p className="text-lg leading-relaxed text-white font-pj">“You made it so simple. My new site is so much faster and easier to work with than my old site. I just choose the page, make the change.”</p>
+                                            <p className="text-lg leading-relaxed text-white font-pj">“The website is super intuitive, even for someone who isn't tech-savvy. Browsing properties, booking viewings, and even getting in touch with agents was straightforward. It made the whole process stress-free and enjoyable."”</p>
                                         </blockquote>
                                     </div>
 
                                     <div className="flex items-center mt-8">
                                         <img className="flex-shrink-0 object-cover rounded-full w-11 h-11" src="https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-1.png" alt="" />
                                         <div className="ml-4">
-                                            <p className="text-base font-bold text-white font-pj">Leslie Alexander</p>
-                                            <p className="mt-0.5 text-sm font-pj text-gray-400">Freelance React Developer</p>
+                                            <p className="text-base font-bold text-white font-pj">Allen Fitjee</p>
                                         </div>
                                     </div>
                                 </div>
@@ -55,15 +54,14 @@ const ClientReviews = () => {
                                         </div>
 
                                         <blockquote className="flex-1 mt-8">
-                                            <p className="text-lg leading-relaxed text-white font-pj">“Simply the best. Better than all the rest. I’d recommend this product to beginners and advanced users.”</p>
+                                            <p className="text-lg leading-relaxed text-white font-pj">“I was impressed with how quickly I could get all the information I needed. From neighborhood insights to property details, everything was well-organized and easy to access. It saved me so much time compared to other sites!”</p>
                                         </blockquote>
                                     </div>
 
                                     <div className="flex items-center mt-8">
                                         <img className="flex-shrink-0 object-cover rounded-full w-11 h-11" src="https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-2.png" alt="" />
                                         <div className="ml-4">
-                                            <p className="text-base font-bold text-white font-pj">Jacob Jones</p>
-                                            <p className="mt-0.5 text-sm font-pj text-gray-400">Digital Marketer</p>
+                                            <p className="text-base font-bold text-white font-pj">Surendra Patel</p>
                                         </div>
                                     </div>
                                 </div>
@@ -81,15 +79,14 @@ const ClientReviews = () => {
                                         </div>
 
                                         <blockquote className="flex-1 mt-8">
-                                            <p className="text-lg leading-relaxed text-white font-pj">“I cannot believe that I have got a brand new landing page after getting Omega. It was super easy to edit and publish.”</p>
+                                            <p className="text-lg leading-relaxed text-white font-pj">“I was pleasantly surprised by the high-quality photos and videos. They gave me a very clear and realistic view of each property, which helped me narrow down my choices before visiting in person. It saved me a lot of time and effort.”</p>
                                         </blockquote>
                                     </div>
 
                                     <div className="flex items-center mt-8">
                                         <img className="flex-shrink-0 object-cover rounded-full w-11 h-11" src="https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-female.png" alt="" />
                                         <div className="ml-4">
-                                            <p className="text-base font-bold text-white font-pj">Jenny Wilson</p>
-                                            <p className="mt-0.5 text-sm font-pj text-gray-400">Graphic Designer</p>
+                                            <p className="text-base font-bold text-white font-pj">Olivia Pearson</p>
                                         </div>
                                     </div>
                                 </div>
