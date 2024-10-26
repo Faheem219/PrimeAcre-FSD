@@ -33,3 +33,14 @@ export const deleteProperty = async (id) => {
     const response = await axios.delete(`/properties/${id}`);
     return response.data;
 };
+
+// Mark a property as interested
+export const markPropertyAsInterested = async (propertyId) => {
+    try {
+        const response = await axios.post(`/properties/${propertyId}/interested`);
+        return response.data;
+    } catch (error) {
+        console.error('Error in markPropertyAsInterested API call:', error); // Debug log
+        throw error;
+    }
+};

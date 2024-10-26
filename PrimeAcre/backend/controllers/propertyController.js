@@ -175,3 +175,34 @@ exports.deleteProperty = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Function to mark a property as interested by a client
+exports.markPropertyAsInterested = async (req, res) => {
+  const { propertyId } = req.params;
+  const userId = req.user.id; // Assuming req.user is populated after authentication
+
+  try {
+    // Find the property
+    const property = await Property.findById(propertyId);
+    if (!property) {
+      return res.status(404).json({ error: 'Property not found' });
+    }
+
+    // Find the user and update interested properties
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if the property is already marked as interested
+    if (!user.interestedProperties.includes(propertyId)) {
+      user.interestedProperties.push(propertyId);
+      await user.save();
+    }
+
+    res.status(200).json({ message: 'Property marked as interested' });
+  } catch (err) {
+    console.error('Error marking property as interested:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
