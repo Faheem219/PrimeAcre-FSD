@@ -38,7 +38,7 @@ function PropertyListPage() {
     return (
         <Box
             sx={{
-                width: '100%',
+                width: '100vw',
                 padding: { xs: 2, sm: 4 },
                 fontFamily: 'Proxima Nova, sans-serif',
                 backgroundColor: '#121212',
