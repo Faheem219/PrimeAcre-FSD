@@ -49,6 +49,7 @@ function LoginPage() {
         isAuthenticated: true,
       }));
       navigate('/');
+      window.location.reload();
     } catch (error) {
       setErrors(error.response?.data?.error || 'Invalid credentials');
     }

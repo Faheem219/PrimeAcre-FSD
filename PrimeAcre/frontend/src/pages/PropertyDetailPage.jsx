@@ -79,6 +79,7 @@ function PropertyDetailPage() {
                 prev.map((review) => (review._id === editReviewId ? updatedReview : review))
             ); // Update the local state with the edited review
             handleCloseEditForm();
+            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while updating the review');
         }
@@ -229,11 +230,16 @@ function PropertyDetailPage() {
                                     <Typography variant="body1">
                                         {review.comment}
                                     </Typography>
+                                    {review.edit && (
+                                        <Typography variant="caption" sx={{ display: 'block', color: '#ff7043' }}>
+                                            Edited
+                                        </Typography>
+                                    )}
                                     <Typography variant="caption" sx={{ display: 'block', marginTop: 1, color: '#bbb' }}>
                                         {new Date(review.createdAt).toLocaleDateString()}
                                     </Typography>
                                     {/* Edit Button for client's own reviews */}
-                                    {auth.isAuthenticated && auth.role === 'Client' && review.client._id === auth.user._id && (
+                                    {auth.isAuthenticated && auth.role === 'Client' && review.client._id === auth.user.id && (
                                         <IconButton
                                             onClick={() => handleOpenEditForm(review)}
                                             sx={{ marginTop: 1, color: '#ff9800' }}
