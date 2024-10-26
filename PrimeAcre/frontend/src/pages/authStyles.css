@@ -1,0 +1,26 @@
+/* authStyles.css */
+.form-container {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+}
+
+/* Slide-in and slide-out animations */
+.slide-in-left {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.slide-out-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.slide-in-right {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.slide-out-right {
+    transform: translateX(100%);
+    opacity: 0;
+}

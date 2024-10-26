@@ -1,7 +1,7 @@
 // src/pages/RegisterPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { registerUser } from '../api/authAPI';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import {
   Container,
@@ -13,13 +13,16 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  FormControlLabel,
   FormHelperText,
-  Link as MuiLink,
+  Switch,
 } from '@mui/material';
+
+import './authStyles.css'; // Import the CSS for animations
 
 function RegisterPage() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [userData, setUserData] = useState({
     role: 'Client',
     firstName: '',
@@ -31,20 +34,31 @@ function RegisterPage() {
   });
   const [errors, setErrors] = useState(null);
 
+  // Determine if currently on the login page based on URL
+  const isLogin = location.pathname === '/login';
+
+  // State to handle animation direction
+  const [animationClass, setAnimationClass] = useState('slide-in-right');
+
+  useEffect(() => {
+    // Set the animation class based on navigation
+    setAnimationClass(isLogin ? 'slide-in-right' : 'slide-in-left');
+  }, [isLogin]);
+
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const handleRoleChange = (e) => {
     const role = e.target.value;
-    setUserData({ ...userData, role, agency: '' }); // Reset agency if not Agent
+    setUserData({ ...userData, role, agency: '' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await registerUser(userData);
-      navigate('/login'); // Redirect to login
+      navigate('/login');
     } catch (error) {
       setErrors(
         error.response?.data?.error || 'An error occurred during registration'
@@ -52,29 +66,41 @@ function RegisterPage() {
     }
   };
 
+  const handleToggle = () => {
+    if (!isLogin) {
+      setAnimationClass('slide-out-right');
+      setTimeout(() => navigate('/login'), 300); // Navigate after animation ends
+    }
+  };
+
   return (
     <Box
       sx={{
-        backgroundColor: '#121212',
+        backgroundColor: '#202040',
         color: '#ffffff',
         minHeight: '100vh',
-        width: '100vw',
         display: 'flex',
-        alignItems: 'center', // Center vertically
-        justifyContent: 'center', // Center horizontally
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
         p: 3,
+        position: 'relative',
+        backgroundImage: 'url(/path-to-your-background-image.jpg)',
+        backgroundSize: 'cover',
+        backgroundBlendMode: 'overlay',
       }}
     >
       <Container maxWidth="sm">
         <Box
+          className={`form-container ${animationClass}`} // Apply animation class
           sx={{
             p: 4,
             boxShadow: 3,
-            borderRadius: 2,
-            backgroundColor: '#1e1e1e',
+            borderRadius: 3,
+            backgroundColor: 'rgba(30, 30, 30, 0.8)',
             width: '100%',
             maxWidth: '500px',
-            mx: 'auto', // Horizontal centering
+            mx: 'auto',
           }}
         >
           <Typography
@@ -82,17 +108,16 @@ function RegisterPage() {
             component="h1"
             gutterBottom
             align="center"
-            sx={{ color: '#ffffff' }}
+            sx={{ color: '#ffffff', fontWeight: 'bold' }}
           >
-            Register
+            Sign up
           </Typography>
           {errors && (
             <Typography color="error" align="center">
               {errors}
             </Typography>
           )}
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            {/* Role */}
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <FormControl fullWidth margin="normal" required>
               <InputLabel id="role-label" sx={{ color: '#ffffff' }}>
                 Role
@@ -104,11 +129,13 @@ function RegisterPage() {
                 onChange={handleRoleChange}
                 label="Role"
                 sx={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   color: '#ffffff',
+                  borderRadius: 1,
                   '.MuiOutlinedInput-notchedOutline': {
                     borderColor: '#ffffff',
                   },
-                  '& .MuiSvgIcon-root': { color: '#ffffff' }, // Arrow color
+                  '& .MuiSvgIcon-root': { color: '#ffffff' },
                 }}
                 MenuProps={{
                   PaperProps: {
@@ -126,7 +153,6 @@ function RegisterPage() {
                 Select your role
               </FormHelperText>
             </FormControl>
-            {/* First Name */}
             <TextField
               label="First Name"
               name="firstName"
@@ -135,6 +161,7 @@ function RegisterPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -144,8 +171,11 @@ function RegisterPage() {
                   },
                 },
               }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
+              }}
             />
-            {/* Last Name */}
             <TextField
               label="Last Name"
               name="lastName"
@@ -154,6 +184,7 @@ function RegisterPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -163,8 +194,11 @@ function RegisterPage() {
                   },
                 },
               }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
+              }}
             />
-            {/* Email */}
             <TextField
               label="Email"
               type="email"
@@ -174,6 +208,7 @@ function RegisterPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -183,8 +218,11 @@ function RegisterPage() {
                   },
                 },
               }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
+              }}
             />
-            {/* Password */}
             <TextField
               label="Password"
               type="password"
@@ -194,6 +232,7 @@ function RegisterPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -203,8 +242,11 @@ function RegisterPage() {
                   },
                 },
               }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
+              }}
             />
-            {/* Phone */}
             <TextField
               label="Phone"
               name="phone"
@@ -213,6 +255,7 @@ function RegisterPage() {
               required
               fullWidth
               margin="normal"
+              variant="outlined"
               InputLabelProps={{ style: { color: '#ffffff' } }}
               InputProps={{
                 style: { color: '#ffffff' },
@@ -222,8 +265,11 @@ function RegisterPage() {
                   },
                 },
               }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
+              }}
             />
-            {/* Agency (for Agents only) */}
             {userData.role === 'Agent' && (
               <TextField
                 label="Agency"
@@ -233,6 +279,7 @@ function RegisterPage() {
                 required
                 fullWidth
                 margin="normal"
+                variant="outlined"
                 InputLabelProps={{ style: { color: '#ffffff' } }}
                 InputProps={{
                   style: { color: '#ffffff' },
@@ -242,29 +289,42 @@ function RegisterPage() {
                     },
                   },
                 }}
+                sx={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: 1,
+                }}
               />
             )}
-            {/* Submit Button */}
             <Button
               type="submit"
               variant="contained"
-              color="primary"
               fullWidth
-              sx={{ mt: 3 }}
+              sx={{
+                mt: 3,
+                backgroundColor: '#ff6b6b',
+                color: '#ffffff',
+                '&:hover': { backgroundColor: '#ff5252' },
+                fontWeight: 'bold',
+              }}
             >
-              Register
+              SIGN UP
             </Button>
           </Box>
-          <Typography
-            variant="body2"
-            align="center"
-            sx={{ mt: 2, color: '#ffffff' }}
-          >
-            Already have an account?{' '}
-            <MuiLink component={Link} to="/login" sx={{ color: '#90caf9' }}>
-              Login here.
-            </MuiLink>
-          </Typography>
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography variant="body2" sx={{ color: '#ffffff', mr: 1 }}>
+              Already have an account? Click here →
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!isLogin}
+                  onChange={handleToggle}
+                  color="secondary"
+                />
+              }
+              label=""
+            />
+          </Box>
         </Box>
       </Container>
     </Box>

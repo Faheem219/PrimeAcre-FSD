@@ -6,13 +6,10 @@ const ClientReviews = () => {
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="flex flex-col items-center">
                     <div className="text-center">
-                        <p className="text-lg font-medium text-gray-400 font-pj">2,157 people have said how good Rareblocks</p>
-                        <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl xl:text-5xl font-pj">Our happy clients say about us</h2>
+                        <p className="text-lg font-medium text-gray-400 font-pj">see what people have to say for us</p>
+                        <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl xl:text-5xl font-pj">See Our Top Liked Comments!!</h2>
                     </div>
 
-                    <div className="mt-8 text-center md:mt-16 md:order-3">
-                        <a href="#" title="" className="pb-2 text-base font-bold leading-7 text-white transition-all duration-200 border-b-2 border-white hover:border-gray-400 font-pj focus:outline-none focus:ring-1 focus:ring-white focus:ring-offset-2 hover:text-gray-400"> Check all 2,157 reviews </a>
-                    </div>
 
                     <div className="relative mt-10 md:mt-24 md:order-2">
                         <div className="absolute -inset-x-1 inset-y-16 md:-inset-x-2 md:-inset-y-6">
