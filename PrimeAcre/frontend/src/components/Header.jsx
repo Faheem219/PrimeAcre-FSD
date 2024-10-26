@@ -1,18 +1,10 @@
-// src/components/Header.jsx
 import React, { useContext } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import axios from '../api/axiosConfig';
-
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Box,
-  Container,
-} from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import logo from '../assets/images/logo-removebg.png'; // Import the logo
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundImage: 'linear-gradient(to right, #8517ff, #6b0000)',
@@ -36,22 +28,41 @@ const Header = () => {
     <StyledAppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Site Title */}
-          <Typography
-            variant="h6"
+          {/* Logo and Site Title */}
+          <Box
             component={RouterLink}
             to="/"
             sx={{
-              mr: 4,
-              ml: 2,
+              display: 'flex',
+              alignItems: 'center',
               textDecoration: 'none',
               color: 'inherit',
-              fontWeight: 'bold',
+              mr: 4,
+              ml: 2,
               flexGrow: 1,
             }}
           >
-            PrimeAcre
-          </Typography>
+            {/* Logo */}
+            <Box
+              component="img"
+              src={logo}
+              alt="PrimeAcre Logo"
+              sx={{
+                height: 40,
+                width: 40,
+                marginRight: 2,
+              }}
+            />
+            {/* Site Title */}
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
+              PrimeAcre
+            </Typography>
+          </Box>
 
           {/* Navigation Links */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
