@@ -51,6 +51,7 @@ exports.checkAuthStatus = (req, res) => {
         role: req.user.role,
         firstName: req.user.firstName,
         lastName: req.user.lastName,
+        interestedProperties: req.user.interestedProperties,
       },
     });
   } else {

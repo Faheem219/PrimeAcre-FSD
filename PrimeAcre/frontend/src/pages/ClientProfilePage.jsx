@@ -18,7 +18,6 @@ function ClientProfilePage() {
     const fetchClientData = async () => {
         try {
             const data = await getUserProfile();
-            console.log("Fetched client data:", data); // Debug log to check the API response
             setClientData(data);
         } catch (error) {
             console.error("Error fetching client data:", error); // Debug log for errors
@@ -135,8 +134,6 @@ function ClientProfilePage() {
                                         height: '100%',
                                     }}
                                 >
-                                    {/* Debug log to ensure we're getting the property data */}
-                                    {console.log("Rendering interested property:", property)}
 
                                     {/* Property Image */}
                                     {property.imageUrl && (

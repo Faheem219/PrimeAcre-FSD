@@ -33,8 +33,8 @@ function PropertyDetailPage() {
                 setProperty(propertyData);
 
                 // Check if the property is already marked as interested by the client
-                if (auth.isAuthenticated && auth.role === 'Client' && propertyData.interestedClients) {
-                    const isClientInterested = propertyData.interestedClients.includes(auth.user.id);
+                if (auth.isAuthenticated && auth.role === 'Client') {
+                    const isClientInterested = auth.user.interestedProperties.includes(propertyData._id);
                     setIsInterested(isClientInterested);
                 }
 
