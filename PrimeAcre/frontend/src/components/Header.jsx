@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import logo from '../assets/images/logo-removebg.png'; // Import the logo
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundImage: 'linear-gradient(to right, #8517ff, #6b0000)',
+  backgroundImage: 'linear-gradient(to right, #be641a, #6b0000)',
 }));
 
 const Header = () => {

@@ -148,7 +148,6 @@ function PropertyDetailPage() {
                         backgroundColor: isInterested ? '#757575' : '#ff9800',
                         '&:hover': { backgroundColor: isInterested ? '#757575' : '#ff7043' },
                     }}
-                    disabled={isInterested}
                 >
                     {isInterested ? 'Marked as Interested' : 'Mark as Interested'}
                 </Button>
