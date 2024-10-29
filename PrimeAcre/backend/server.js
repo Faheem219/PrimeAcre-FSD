@@ -44,7 +44,7 @@ app.use(
     cookie: {
       secure: false, // Set to true if using HTTPS
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: 'None',
     },
   })
 );
