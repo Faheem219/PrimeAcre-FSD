@@ -43,7 +43,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: false, // Set to true if using HTTPS
-      httpOnly: true,
+      httpOnly: false,
       sameSite: 'None',
     },
   })
