@@ -23,6 +23,7 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL, // Replace with your frontend URL and port
     credentials: true,
+    
   })
 );
 
