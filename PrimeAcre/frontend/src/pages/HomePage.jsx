@@ -7,6 +7,7 @@ import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 import { getProperties } from '../api/propertyAPI';
 import ClientReviews from '../components/clientReviews';
+import background from '../assets/images/hero.jpg'
 
 // Create styles for dark theme and background image section
 const useStyles = makeStyles(() => ({
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
         position: 'relative',
         width: '100vw',
         height: '100vh',
-        backgroundImage: 'url(/src/assets/images/hero.jpg)',
+        backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',

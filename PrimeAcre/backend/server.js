@@ -21,7 +21,7 @@ const app = express();
 // CORS Middleware
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Replace with your frontend URL and port
+    origin: process.env.FRONTEND_URL, // Replace with your frontend URL and port
     credentials: true,
   })
 );
