@@ -66,6 +66,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get('/', (req, res) => res.send('Backend is running!'));
+
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/properties', propertyRoutes);
