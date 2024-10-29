@@ -21,11 +21,15 @@ const app = express();
 // CORS Middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL, // Replace with your frontend URL and port
-    credentials: true,
-    
+    origin: process.env.FRONTEND_URL,  // Ensure this matches your frontend URL
+    credentials: true,  // Allow cookies and other credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
   })
 );
+
+// Handle Preflight Requests for All Routes
+app.options('*', cors()); 
 
 // Middleware
 app.use(express.json());
