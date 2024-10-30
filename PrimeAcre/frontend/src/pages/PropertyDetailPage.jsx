@@ -54,6 +54,7 @@ function PropertyDetailPage() {
         try {
             await markPropertyAsInterested(id);
             setIsInterested(true); // Update state to reflect the interested status
+            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while marking the property as interested');
         }
@@ -84,6 +85,7 @@ function PropertyDetailPage() {
             const newReview = await addReview(id, reviewData);
             setReviews((prev) => [...prev, newReview]);
             handleCloseReviewForm();
+            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while submitting the review');
         }
@@ -97,6 +99,7 @@ function PropertyDetailPage() {
                 prev.map((review) => (review._id === editReviewId ? updatedReview : review))
             );
             handleCloseEditForm();
+            window.location.reload();
         } catch (error) {
             setErrors(error.response?.data?.error || 'An error occurred while updating the review');
         }
