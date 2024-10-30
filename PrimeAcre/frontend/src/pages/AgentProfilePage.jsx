@@ -44,6 +44,7 @@ function AgentProfilePage() {
             <Box
                 sx={{
                     minHeight: '100vh',
+                    minWidth: '100vw',
                     backgroundColor: '#121212',
                     color: '#FFFFFF',
                     display: 'flex',
