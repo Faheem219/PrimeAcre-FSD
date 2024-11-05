@@ -15,7 +15,7 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
   - [🛠️ Backend Setup](#%EF%B8%8F-backend-setup)
   - [🎨 Frontend Setup](#-frontend-setup)
   - [▶️ Running the Application](#️-running-the-application)
-- [🌍 Live Demo](#-live-demo)
+- [🌍 Deployment](#-deployment)
 
 ---
 
@@ -175,7 +175,7 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
 
 ---
 
-## 🌍 Live Demo
+## 🌍 Deployment
 
 The **PrimeAcre Website** is now live! You can access the deployed application using the following link:
 
