@@ -86,11 +86,10 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
 
 1. **Clone the Repository**
 
-  💡 (Alternatively, download the zip file of this repo and extract it, if git is not setup on your PC) 
-
    ```bash
    git clone https://github.com/Faheem219/PrimeAcre-FSD.git
    ```
+   💡 (Alternatively, download the zip file of this repo and extract it, if git is not setup on your PC) 
 
 1. **Navigate to the Backend Directory**
 
