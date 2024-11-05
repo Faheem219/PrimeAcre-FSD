@@ -59,6 +59,7 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
   - [React](https://reactjs.org/) with [Vite](https://vitejs.dev/)
   - [React Router](https://reactrouter.com/)
   - [Axios](https://axios-http.com/)
+  - **Styling**: [Tailwind CSS](https://tailwindcss.com/) for utility-first styling and [Material UI](https://mui.com/) for rich, pre-built component designs
 - **Backend**:
   - [Node.js](https://nodejs.org/)
   - [Express](https://expressjs.com/)
