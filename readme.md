@@ -10,7 +10,7 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
 - [✨ Features](#-features)
 - [🔧 Functionalities](#-functionalities)
 - [💻 Technologies Used](#-technologies-used)
-- [🚀 Installation and Usage (To run locally)](#-installation-and-usage)
+- [🚀 Installation and Usage (To run locally)](#-installation-and-usage-to-run-locally)
   - [🔑 Prerequisites](#-prerequisites)
   - [🛠️ Backend Setup](#%EF%B8%8F-backend-setup)
   - [🎨 Frontend Setup](#-frontend-setup)
