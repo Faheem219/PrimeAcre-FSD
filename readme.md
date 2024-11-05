@@ -86,23 +86,25 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
 
 1. **Clone the Repository**
 
+  💡 (Alternatively, download the zip file of this repo and extract it, if git is not setup on your PC) 
+
    ```bash
    git clone https://github.com/Faheem219/PrimeAcre-FSD.git
    ```
 
-2. **Navigate to the Backend Directory**
+1. **Navigate to the Backend Directory**
 
     ```bash
     cd PrimeAcre-FSD/backend
     ```
 
-3. **Install Backend Dependencies**
+2. **Install Backend Dependencies**
 
     ```bash
     npm install
     ```
 
-4. **Create a .env File**
+3. **Create a .env File**
 
     ```bash
     touch .env
@@ -121,7 +123,7 @@ An **End-to-End Real Estate Management System** built with **Node.js**, **Expres
     ```
     💡 (Replace the placeholders with your actual credentials)
 
-5. **Start the Backend Server**
+4. **Start the Backend Server**
 
     ```bash
     npm start
