@@ -261,7 +261,7 @@ function PropertyDetailPage() {
                 </Grid>
             </Box>
 
-            {/* Comments Section */}
+            {/* Comments Sec*/}
             <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#ff9800' }}>
                 Comments
             </Typography>
