@@ -13,6 +13,7 @@ import {
   Switch,
 } from '@mui/material';
 
+import loginHero from '../assets/images/loginHero.jpg'; // Import your background image
 import './authStyles.css'; // Import custom CSS for animations
 
 function LoginPage() {
@@ -74,9 +75,12 @@ function LoginPage() {
         width: '100vw',
         p: 2,
         position: 'relative',
-        backgroundImage: 'url(/path-to-your-background-image.jpg)',
+        backgroundImage: `url(${loginHero})`,
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         backgroundBlendMode: 'overlay',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark overlay for better text visibility
       }}
     >
       <Container maxWidth="xs" sx={{ position: 'relative' }}>

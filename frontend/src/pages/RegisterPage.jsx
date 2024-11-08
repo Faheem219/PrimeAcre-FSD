@@ -1,4 +1,5 @@
 // src/pages/RegisterPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import { registerUser } from '../api/authAPI';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -18,11 +19,14 @@ import {
   Switch,
 } from '@mui/material';
 
-import './authStyles.css'; // Import the CSS for animations
+import loginHero from '../assets/images/loginHero.jpg'; // Background image import
+import './authStyles.css'; // Import custom CSS for animations
 
 function RegisterPage() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // State to store user data
   const [userData, setUserData] = useState({
     role: 'Client',
     firstName: '',
@@ -32,51 +36,54 @@ function RegisterPage() {
     phone: '',
     agency: '',
   });
+
+  // State for error messages
   const [errors, setErrors] = useState(null);
 
-  // Determine if currently on the login page based on URL
+  // Check if currently on the login page
   const isLogin = location.pathname === '/login';
 
   // State to handle animation direction
   const [animationClass, setAnimationClass] = useState('slide-in-right');
 
+  // Set animation class based on navigation
   useEffect(() => {
-    // Set the animation class based on navigation
     setAnimationClass(isLogin ? 'slide-in-right' : 'slide-in-left');
   }, [isLogin]);
 
+  // Handle input changes
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  // Handle role change and reset agency field if not an agent
   const handleRoleChange = (e) => {
     const role = e.target.value;
     setUserData({ ...userData, role, agency: '' });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await registerUser(userData);
-      navigate('/login');
+      navigate('/login'); // Redirect to login page after successful registration
     } catch (error) {
-      setErrors(
-        error.response?.data?.error || 'An error occurred during registration'
-      );
+      setErrors(error.response?.data?.error || 'An error occurred during registration');
     }
   };
 
+  // Toggle between register and login pages with animation
   const handleToggle = () => {
     if (!isLogin) {
       setAnimationClass('slide-out-right');
-      setTimeout(() => navigate('/login'), 300); // Navigate after animation ends
+      setTimeout(() => navigate('/login'), 300);
     }
   };
 
   return (
     <Box
       sx={{
-        backgroundColor: '#202040',
         color: '#ffffff',
         minHeight: '100vh',
         display: 'flex',
@@ -85,14 +92,17 @@ function RegisterPage() {
         width: '100vw',
         p: 3,
         position: 'relative',
-        backgroundImage: 'url(/path-to-your-background-image.jpg)',
+        backgroundImage: `url(${loginHero})`,
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         backgroundBlendMode: 'overlay',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark overlay for better text readability
       }}
     >
       <Container maxWidth="sm">
         <Box
-          className={`form-container ${animationClass}`} // Apply animation class
+          className={`form-container ${animationClass}`}
           sx={{
             p: 4,
             boxShadow: 3,
@@ -118,6 +128,7 @@ function RegisterPage() {
             </Typography>
           )}
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            {/* Role Selection */}
             <FormControl fullWidth margin="normal" required>
               <InputLabel id="role-label" sx={{ color: '#ffffff' }}>
                 Role
@@ -149,127 +160,39 @@ function RegisterPage() {
                 <MenuItem value="Client">Client</MenuItem>
                 <MenuItem value="Agent">Agent</MenuItem>
               </Select>
-              <FormHelperText sx={{ color: '#ffffff' }}>
-                Select your role
-              </FormHelperText>
+              <FormHelperText sx={{ color: '#ffffff' }}>Select your role</FormHelperText>
             </FormControl>
-            <TextField
-              label="First Name"
-              name="firstName"
-              value={userData.firstName}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{ style: { color: '#ffffff' } }}
-              InputProps={{
-                style: { color: '#ffffff' },
-                sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#ffffff',
+
+            {/* Form Fields */}
+            {['firstName', 'lastName', 'email', 'password', 'phone'].map((field) => (
+              <TextField
+                key={field}
+                label={field.replace(/([A-Z])/g, ' $1')}
+                name={field}
+                type={field === 'password' ? 'password' : 'text'}
+                value={userData[field]}
+                onChange={handleChange}
+                required
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{
+                  style: { color: '#ffffff' },
+                  sx: {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#ffffff',
+                    },
                   },
-                },
-              }}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: 1,
-              }}
-            />
-            <TextField
-              label="Last Name"
-              name="lastName"
-              value={userData.lastName}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{ style: { color: '#ffffff' } }}
-              InputProps={{
-                style: { color: '#ffffff' },
-                sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#ffffff',
-                  },
-                },
-              }}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: 1,
-              }}
-            />
-            <TextField
-              label="Email"
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{ style: { color: '#ffffff' } }}
-              InputProps={{
-                style: { color: '#ffffff' },
-                sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#ffffff',
-                  },
-                },
-              }}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: 1,
-              }}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              name="password"
-              value={userData.password}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{ style: { color: '#ffffff' } }}
-              InputProps={{
-                style: { color: '#ffffff' },
-                sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#ffffff',
-                  },
-                },
-              }}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: 1,
-              }}
-            />
-            <TextField
-              label="Phone"
-              name="phone"
-              value={userData.phone}
-              onChange={handleChange}
-              required
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{ style: { color: '#ffffff' } }}
-              InputProps={{
-                style: { color: '#ffffff' },
-                sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#ffffff',
-                  },
-                },
-              }}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: 1,
-              }}
-            />
+                }}
+                sx={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: 1,
+                }}
+              />
+            ))}
+
+            {/* Agency Field (Visible Only for Agents) */}
             {userData.role === 'Agent' && (
               <TextField
                 label="Agency"
@@ -295,6 +218,8 @@ function RegisterPage() {
                 }}
               />
             )}
+
+            {/* Submit Button */}
             <Button
               type="submit"
               variant="contained"
@@ -310,6 +235,8 @@ function RegisterPage() {
               SIGN UP
             </Button>
           </Box>
+
+          {/* Toggle to Login Page */}
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Typography variant="body2" sx={{ color: '#ffffff', mr: 1 }}>
               Already have an account? Click here →

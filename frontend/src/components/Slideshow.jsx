@@ -28,7 +28,7 @@ const Slideshow = ({ images }) => {
           position: "relative",
           flex: 1,
           height: 500,
-          border: "3px solid #ff9800", // Added border
+          border: "3px solid #808080", // Added border
           borderRadius: "12px", // Rounded corners
           overflow: "hidden", // Ensures image doesn't overflow the border
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)", // Subtle shadow for depth
@@ -51,7 +51,7 @@ const Slideshow = ({ images }) => {
             top: "50%",
             left: "10px",
             transform: "translateY(-50%)",
-            color: "#ff9800",
+            color: "#808080",
             zIndex: 1,
           }}
         >
@@ -64,7 +64,7 @@ const Slideshow = ({ images }) => {
             top: "50%",
             right: "10px",
             transform: "translateY(-50%)",
-            color: "#ff9800",
+            color: "#808080",
             zIndex: 1,
           }}
         >
@@ -91,8 +91,8 @@ const Slideshow = ({ images }) => {
             alt={`Thumbnail ${index + 1}`}
             onClick={() => handleThumbnailClick(index)}
             sx={{
-              width: 120, // Increased the width of the thumbnails
-              height: 120, // Increased the height of the thumbnails
+              width: 250, // Increased the width of the thumbnails
+              height: 150, // Increased the height of the thumbnails
               borderRadius: 6,
               cursor: "pointer",
               border: activeIndex === index ? "3px solid #ff9800" : "1px solid #ccc",
