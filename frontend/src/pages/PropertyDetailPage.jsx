@@ -79,7 +79,7 @@ function PropertyDetailPage() {
     } catch (error) {
       setErrors(
         error.response?.data?.error ||
-          "An error occurred while marking the property as interested"
+        "An error occurred while marking the property as interested"
       );
     }
   };
@@ -113,7 +113,7 @@ function PropertyDetailPage() {
     } catch (error) {
       setErrors(
         error.response?.data?.error ||
-          "An error occurred while submitting the review"
+        "An error occurred while submitting the review"
       );
     }
   };
@@ -132,7 +132,7 @@ function PropertyDetailPage() {
     } catch (error) {
       setErrors(
         error.response?.data?.error ||
-          "An error occurred while updating the review"
+        "An error occurred while updating the review"
       );
     }
   };
