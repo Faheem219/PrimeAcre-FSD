@@ -66,7 +66,6 @@ function LoginPage() {
   return (
     <Box
       sx={{
-        backgroundColor: '#202040',
         color: '#ffffff',
         minHeight: '100vh',
         display: 'flex',
